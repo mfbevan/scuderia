@@ -3,13 +3,12 @@ import { DeployFunction } from "hardhat-deploy/types";
 import { parseEther } from "ethers/lib/utils";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  return;
   const { ethers, deployments } = hre;
   const { deploy } = deployments;
 
   const [deployer] = await ethers.getSigners();
 
-  deploy("Scoot", {
+  await deploy("Scoot", {
     from: deployer.address,
     log: true,
     contract: "Scoot",

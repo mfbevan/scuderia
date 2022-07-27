@@ -33,7 +33,7 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
           contract: "Scuderia",
           args: [constants.AddressZero],
         })
-      ).to.be.revertedWith("Ownable: new owner is the zero address");
+      ).to.be.revertedWith("owner address cannot be 0x0");
     });
     it("should transfer ownership if owner address is different to deployer", async () => {
       await deploy("ScuderiaTest", {
@@ -53,7 +53,7 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
   describe("Minting", () => {
     it("should revert if sale is not active", async () => {
       await expect(Scuderia.mint(1)).to.be.revertedWith(
-        "land minting inactive"
+        "SaleInactive"
       );
     });
     it("should revert if supply will be exceeded", async () => {
