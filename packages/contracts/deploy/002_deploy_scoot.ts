@@ -1,7 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { ethers } from "hardhat";
-import { config } from "../../lib/config";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
@@ -9,16 +7,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  await deploy("NFTToken", {
+  await deploy("Scoot", {
     from: deployer,
     log: true,
-    contract: "NFTToken",
+    contract: "Scoot",
     args: [
-      deployer,
-      config.maxSupply,
-      ethers.utils.parseEther(`${config.mintPrice}`)
+      deployer
     ],
   });
 };
 export default func;
-func.tags = ["testbed", "_nfttoken"];
+func.tags = ["testbed", "_scoot"];

@@ -42,6 +42,7 @@
         "chai": "^4.3.6",
         "chai-as-promised": "^7.1.1",
         "dotenv": "^16.0.1",
+        "erc721a": "^4.2.0",
         "eslint": "^7.32.0",
         "eslint-config-labrys": "^0.6.4",
         "eslint-plugin-import": "^2.24.2",
