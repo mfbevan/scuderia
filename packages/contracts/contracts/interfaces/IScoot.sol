@@ -18,4 +18,16 @@ interface IScoot {
    * @notice Claims the pending unclaimed token to the callers wallet
    */
   function claimToken() external;
+
+  /**
+   * @notice Get the current wallet balance of an account
+   * @param _account the account to check the balance for
+   */
+  function getBalance(address _account) external view;
+
+  /**
+   * @notice Get the unclaimed/claimable balance of an account
+   * @param _account the account to check the unclaimed balance for
+   */
+  function getUnclaimedBalance(address _account) external view;
 }

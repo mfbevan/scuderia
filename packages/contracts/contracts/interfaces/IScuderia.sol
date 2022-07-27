@@ -2,6 +2,11 @@
 pragma solidity 0.8.15;
 
 interface IScuderia {
+  struct Stake {
+    uint128 timeStaked;
+    uint128 lockinPeriod;
+  }
+
   /**
    * @notice Genesis Mint - Mint quantity of nfts to sender
    * @param _quantity number of nfts to mint

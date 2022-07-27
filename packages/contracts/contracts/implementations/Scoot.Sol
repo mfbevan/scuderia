@@ -23,4 +23,12 @@ contract Scoot is IScoot, ERC20 {
     function claimToken() external {
         // ...
     }
+
+    function getBalance(address _account) external view {
+        // ...
+    }
+
+    function getUnclaimedBalance(address _account) external view {
+        // ...
+    }
 }
