@@ -24,7 +24,7 @@ contract Scuderia is IScuderia, Ownable, ERC721A {
     }
 
     function mint(uint256 _quantity) external payable {
-        // ...
+        _mint(msg.sender, _quantity);
     }
 
     function secondaryMint(uint256 _blueprintId) external {

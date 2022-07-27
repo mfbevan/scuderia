@@ -2,8 +2,9 @@ import * as dotenv from "dotenv";
 
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomiclabs/hardhat-etherscan";
-import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
+import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-chai-matchers";
 import "hardhat-gas-reporter";
 import "hardhat-deploy";
 import "solidity-coverage";
@@ -61,6 +62,10 @@ const config: HardhatUserConfig = {
     bob: 2,
     carol: 3,
     ted: 4,
+  },
+  typechain: {
+    outDir: "typechain",
+    target: "ethers-v5",
   },
 };
 

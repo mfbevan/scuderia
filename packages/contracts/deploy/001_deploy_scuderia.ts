@@ -2,19 +2,15 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts } = hre;
-  const { deploy } = deployments;
+    const { ethers } = hre;
 
-  const { deployer } = await getNamedAccounts();
+    const [deployer] = await ethers.getSigners();
 
-  await deploy("Scuderia", {
-    from: deployer,
-    log: true,
-    contract: "Scuderia",
-    args: [
-      deployer
-    ],
-  });
+    const ScuderiaContractFactory = await ethers.getContractFactory(
+        "Scuderia",
+        deployer
+    );
+    await ScuderiaContractFactory.deploy(deployer.address);
 };
 export default func;
 func.tags = ["testbed", "_scuderia"];
