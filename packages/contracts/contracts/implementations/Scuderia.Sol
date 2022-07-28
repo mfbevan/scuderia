@@ -2,11 +2,12 @@
 pragma solidity 0.8.15;
 
 import "../interfaces/IScuderia.sol";
+import "./ERC721Stakable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "erc721a/contracts/ERC721A.sol";
 
-contract Scuderia is IScuderia, Ownable, ERC721A {
+contract Scuderia is IScuderia, Ownable, ERC721Stakable {
     uint256 constant MAX_SUPPLY_GENESIS = 5000;
     uint256 constant MAX_SUPPLY_SECONDARY = 10000;
     uint64 MINT_PRICE = 0.1 ether;
@@ -18,10 +19,7 @@ contract Scuderia is IScuderia, Ownable, ERC721A {
 
     bool public saleActive = false;
 
-    // Token Id => currently staked
-    mapping(uint256 => bool) staked;
-
-    constructor(address _ownerAddress) ERC721A("Scuderia", "SCD") {
+    constructor(address _ownerAddress) ERC721Stakable("Scuderia", "SCD") {
         require(_ownerAddress != address(0), "owner address cannot be 0x0");
         if (_ownerAddress != msg.sender) {
             transferOwnership(_ownerAddress);
@@ -43,15 +41,14 @@ contract Scuderia is IScuderia, Ownable, ERC721A {
         // ...
     }
 
-    function stake(uint256[] memory _tokens) external {
-        // ...
-    }
-
-    function unstake(uint256[] memory _tokens) external {
-        // ...
-    }
-
     function toggleSale() external onlyOwner {
         saleActive = !saleActive;
+    }
+
+    /**
+     * Sets the initial token id to start at 1 instead of 0
+     */
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
     }
 }

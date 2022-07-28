@@ -11,7 +11,7 @@ use(chaiAsPromised);
 const { deploy } = deployments;
 const MINT_PRICE = parseEther("0.1");
 
-describe.only("Scuderia Racing ERC721 Contract", () => {
+describe("Scuderia Racing ERC721 Minting", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
@@ -50,7 +50,7 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
     });
   });
 
-  describe("Minting", () => {
+  describe("Genesis Minting", () => {
     beforeEach(async () => {
       await Scuderia.toggleSale();
     });
@@ -71,7 +71,7 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
       await expect(Scuderia.mint(0)).to.be.revertedWithCustomError(
         Scuderia,
         "ZeroQuantity"
-      );
+      ); 
     });
     it("should cost 0.1 ETH", async () => {
       const initialBalance = await alice.getBalance();
@@ -82,8 +82,6 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
     describe("multiple NFTs", () => {
       const numToMint = 2;
       const mintCost = MINT_PRICE.mul(numToMint);
-
-      
 
       it(`should cost ${0.1 * numToMint} ETH`, async () => {
         const initialBalance = await alice.getBalance();

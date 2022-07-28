@@ -1,0 +1,5 @@
+export enum StakingLockin {
+  STAKE_30_DAYS = 2592000,
+  STAKE_60_DAYS = 5184000,
+  STAKE_90_DAYS = 7776000,
+}
