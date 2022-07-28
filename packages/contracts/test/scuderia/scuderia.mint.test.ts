@@ -51,50 +51,58 @@ describe.only("Scuderia Racing ERC721 Contract", () => {
   });
 
   describe("Minting", () => {
+    beforeEach(async () => {
+      await Scuderia.toggleSale();
+    });
+
     it("should revert if sale is not active", async () => {
-      await expect(Scuderia.mint(1)).to.be.revertedWith(
+      await Scuderia.toggleSale(); // toggle sale to off
+      await expect(Scuderia.mint(1)).to.be.revertedWithCustomError(
+        Scuderia,
         "SaleInactive"
       );
     });
     it("should revert if supply will be exceeded", async () => {
-      await Scuderia.toggleSale();
-      await expect(Scuderia.connect(alice).mint(501)).to.be.revertedWith(
-        "supply will be exceeded"
-      );
+      await expect(
+        Scuderia.connect(alice).mint(5001)
+      ).to.be.revertedWithCustomError(Scuderia, "SupplyWillBeExceeded");
     });
     it("should revert on a zero quantity", async () => {
-      await Scuderia.toggleSale();
-      await expect(Scuderia.mint(0)).to.be.revertedWith(
-        "minting zero quantity"
+      await expect(Scuderia.mint(0)).to.be.revertedWithCustomError(
+        Scuderia,
+        "ZeroQuantity"
       );
     });
+    it("should cost 0.1 ETH", async () => {
+      const initialBalance = await alice.getBalance();
+      await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
+      expect(initialBalance.sub(await alice.getBalance())).to.eq(MINT_PRICE);
+    });
 
-    // Alice should have enough funds to complete actions
-    // Bob does not have the funds
-    describe("multiple Land NFTs", () => {
+    describe("multiple NFTs", () => {
       const numToMint = 2;
       const mintCost = MINT_PRICE.mul(numToMint);
 
-      beforeEach(async () => {
-        await Scuderia.toggleSale();
-      });
+      
 
       it(`should cost ${0.1 * numToMint} ETH`, async () => {
-        await Scuderia.connect(alice).mint(numToMint);
+        const initialBalance = await alice.getBalance();
+        await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
+        expect(initialBalance.sub(await alice.getBalance())).to.eq(mintCost);
       });
-      it("should revert when account does not have sufficient funds", async () => {
-        await expect(Scuderia.connect(bob).mint(numToMint)).to.be.revertedWith(
-          "ERC20: burn amount exceeds balance"
-        );
+      it("should revert when no payment made", async () => {
+        await expect(
+          Scuderia.connect(bob).mint(numToMint)
+        ).to.be.revertedWithCustomError(Scuderia, "IncorrectPaymentAmount");
       });
-      it("should revert when maximum mint exceeded", async () => {
-        await expect(Scuderia.connect(bob).mint(501)).to.be.revertedWith(
-          "maximum mint exceeded"
-        );
+      it("should revert when incorrect payment made", async () => {
+        await expect(
+          Scuderia.connect(bob).mint(numToMint, { value: parseEther("1000") })
+        ).to.be.revertedWithCustomError(Scuderia, "IncorrectPaymentAmount");
       });
       it("should increase total supply", async () => {
         expect(await Scuderia.totalSupply()).to.eq(0);
-        await Scuderia.connect(alice).mint(numToMint);
+        await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
         expect(await Scuderia.totalSupply()).to.eq(numToMint);
       });
     });

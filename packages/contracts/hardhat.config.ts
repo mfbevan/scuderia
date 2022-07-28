@@ -40,6 +40,8 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       allowUnlimitedContractSize: true,
+      gasPrice: 0,
+      initialBaseFeePerGas: 0
     },
     goerli: {
       url: process.env.GOERLI_URL || "",

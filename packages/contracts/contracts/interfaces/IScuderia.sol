@@ -40,4 +40,14 @@ interface IScuderia {
      * @notice making a function call with a zero quantity
      */
     error ZeroQuantity();
+
+    /**
+     * @notice Incorrect payment amount
+     */
+    error IncorrectPaymentAmount();
+
+    /**
+     * @notice The supply will be exceeded if this transaction was completed
+     */
+    error SupplyWillBeExceeded();
 }

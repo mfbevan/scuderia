@@ -7,9 +7,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "erc721a/contracts/ERC721A.sol";
 
 contract Scuderia is IScuderia, Ownable, ERC721A {
-    uint16 constant MAX_SUPPLY_GENESIS = 5000;
-    uint16 constant MAX_SUPPLY_SECONDARY = 10000;
+    uint256 constant MAX_SUPPLY_GENESIS = 5000;
+    uint256 constant MAX_SUPPLY_SECONDARY = 10000;
     uint64 MINT_PRICE = 0.1 ether;
+    uint8 genesisSupply = 0;
+    uint8 secondarySupply = 0;
 
     string private tokenBaseURI;
     string private contractURI;
@@ -18,7 +20,6 @@ contract Scuderia is IScuderia, Ownable, ERC721A {
 
     // Token Id => currently staked
     mapping(uint256 => bool) staked;
-
 
     constructor(address _ownerAddress) ERC721A("Scuderia", "SCD") {
         require(_ownerAddress != address(0), "owner address cannot be 0x0");
@@ -30,6 +31,11 @@ contract Scuderia is IScuderia, Ownable, ERC721A {
     function mint(uint256 _quantity) external payable {
         if (!saleActive) revert SaleInactive();
         if (_quantity == 0) revert ZeroQuantity();
+        if (genesisSupply + _quantity > MAX_SUPPLY_GENESIS)
+            revert SupplyWillBeExceeded();
+        if (msg.value != MINT_PRICE * _quantity)
+            revert IncorrectPaymentAmount();
+        genesisSupply++;
         _mint(msg.sender, _quantity);
     }
 
