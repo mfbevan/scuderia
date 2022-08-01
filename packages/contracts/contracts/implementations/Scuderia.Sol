@@ -34,7 +34,7 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         if (msg.value != MINT_PRICE * _quantity)
             revert IncorrectPaymentAmount();
         genesisSupply++;
-        _mint(msg.sender, _quantity);
+        _safeMint(msg.sender, _quantity);
     }
 
     function secondaryMint(uint256 _blueprintId) external {
