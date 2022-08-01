@@ -41,7 +41,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
       gasPrice: 0,
-      initialBaseFeePerGas: 0
+      initialBaseFeePerGas: 0,
     },
     goerli: {
       url: process.env.GOERLI_URL || "",
@@ -50,12 +50,17 @@ const config: HardhatUserConfig = {
       gas: 2100000,
       gasPrice: 8000000000,
     },
+    mumbai: {
+      url: "https://rpc-mumbai.maticvigil.com",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   gasReporter: {
     enabled: true,
     currency: "USD",
   },
-  etherscan: {
+  etherscan: {  
     apiKey: process.env.ETHERSCAN_API_KEY,
   },
   namedAccounts: {
