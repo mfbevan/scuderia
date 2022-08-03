@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Heading } from "@chakra-ui/react";
+import { Heading, Box } from "@chakra-ui/react";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Home: NextPage = () => {
   return (
@@ -15,6 +16,8 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <Heading>Scuderia </Heading>
         <Heading>🏎️</Heading>
+        <Box mb={4} />
+        <ConnectButton />
       </main>
     </div>
   );
