@@ -12,17 +12,44 @@ contract ERC721Stakable is IStakable, ERC721A {
         ERC721A(_name, _symbol)
     {}
 
-    function stake(uint256[] memory _tokens) external {
+    function stake(uint256[] memory _tokens, LockinPeriod _lockin) external {
+        uint64 lockinSeconds = getLockinSeconds(_lockin);
         for (uint256 i = 0; i < _tokens.length; i++) {
             if (ownerOf(_tokens[i]) != msg.sender) revert NotTokenOwner();
             if (stakes[_tokens[i]].timeStaked != 0)
                 revert TokenAlreadyStaked(_tokens[i]);
-            stakes[_tokens[i]] = StakedToken(uint64(block.timestamp), 30 days);
+            stakes[_tokens[i]] = StakedToken(
+                uint64(block.timestamp),
+                lockinSeconds
+            );
         }
-        emit Stake(msg.sender, _tokens, 30 days);
+        emit Stake(msg.sender, _tokens, lockinSeconds);
     }
 
     function unstake(uint256[] memory _tokens) external {
-        // ...
+        for (uint256 i = 0; i < _tokens.length; i++) {
+            StakedToken memory _stakedToken = stakes[_tokens[i]];
+            if (ownerOf(_tokens[i]) != msg.sender) revert NotTokenOwner();
+            if (_stakedToken.timeStaked == 0) revert TokenNotStaked(_tokens[i]);
+            if (
+                _stakedToken.timeStaked + _stakedToken.lockinPeriod >
+                block.timestamp
+            ) revert TokenInLockin(_tokens[i]);
+            delete stakes[_tokens[i]];
+        }
+        emit Unstake(msg.sender, _tokens);
+    }
+
+    /**
+     * @notice Return the expected length (in seconds) of the lockin period for the lockin period enum option
+     */
+    function getLockinSeconds(LockinPeriod _lockin)
+        internal
+        pure
+        returns (uint64 lockinSeconds)
+    {
+        if (_lockin == LockinPeriod.STAKE_30_DAYS) lockinSeconds = 30 days;
+        if (_lockin == LockinPeriod.STAKE_60_DAYS) lockinSeconds = 60 days;
+        if (_lockin == LockinPeriod.STAKE_90_DAYS) lockinSeconds = 90 days;
     }
 }

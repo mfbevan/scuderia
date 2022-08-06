@@ -8,6 +8,15 @@ interface IStakable {
     }
 
     /**
+     * The lockin period for staking in which an nft is staked and cannot be unstaked
+     */
+    enum LockinPeriod {
+        STAKE_30_DAYS,
+        STAKE_60_DAYS,
+        STAKE_90_DAYS
+    }
+
+    /**
      * @notice Emits when a user stakes their NFT tokens
      * @param _owner The owner of the tokens
      * @param _tokens The token ids being staked
@@ -29,8 +38,9 @@ interface IStakable {
     /**
      * @notice Stake Scuderia tokens in current users wallet, making them unable to withdraw but enabling more functionality
      * @param _tokens array of token ids to stake
+     * @param _lockin Lockin period in seconds
      */
-    function stake(uint256[] memory _tokens) external;
+    function stake(uint256[] memory _tokens, LockinPeriod _lockin) external;
 
     /**
      * @notice Unstake the tokens locked in a users wallet, making them available for transfer
@@ -44,7 +54,17 @@ interface IStakable {
     error NotTokenOwner();
 
     /**
-     * @notice Token is already staked
+     * @notice Token is already staked but expected to not be staked
      */
     error TokenAlreadyStaked(uint256 _tokenId);
+
+    /**
+     * @notice Token is not staked but is expected to be staked
+     */
+    error TokenNotStaked(uint256 _tokenId);
+
+    /**
+     * @notice The Token cannot be unstaked as it in still within its lockin period
+     */
+    error TokenInLockin(uint256 _tokenId);
 }
