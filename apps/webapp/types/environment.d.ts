@@ -1,14 +1,11 @@
-export {};
+import { Network } from "../config/config";
 
-export enum Network {
-  PolygonMainnet = "polygon",
-  PolygonMumbai = "mumbai",
-}
+export {};
 
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      NEXT_PUBLIC_NETWORK: Network.PolygonMainnet | Network.PolygonMumbai;
+      NEXT_PUBLIC_NETWORK: Network;
     }
   }
 }

@@ -1,18 +1,20 @@
-import { Network } from "../types/environment";
+import { chain, Chain } from "wagmi";
+
+export enum Network {
+  PolygonMainnet = "polygon",
+  PolygonMumbai = "mumbai",
+}
 
 interface IConfig {
-  network: string;
-  chainId: number;
+  chain: Chain;
 }
 
 const polygonMainnet: IConfig = {
-  network: Network.PolygonMainnet,
-  chainId: 137,
+  chain: chain.polygon,
 };
 
 const polygonMumbai: IConfig = {
-  network: Network.PolygonMumbai,
-  chainId: 80001,
+  chain: chain.polygonMumbai,
 };
 
 const ConfigRecord: Record<Network, IConfig> = {
@@ -20,4 +22,5 @@ const ConfigRecord: Record<Network, IConfig> = {
   [Network.PolygonMumbai]: polygonMumbai,
 };
 
-export const config = ConfigRecord[process.env.NEXT_PUBLIC_NETWORK];
+export const config =
+  ConfigRecord[process.env.NEXT_PUBLIC_NETWORK ?? Network.PolygonMainnet];
