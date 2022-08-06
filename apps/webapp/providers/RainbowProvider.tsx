@@ -11,9 +11,9 @@ import { publicProvider } from "wagmi/providers/public";
 
 const RainbowProvider = ({ children }: { children: ReactNode }) => {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.polygonMumbai],
     [
-      // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID }),
+    // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID! }),
       publicProvider(),
     ]
   );
