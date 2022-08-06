@@ -11,15 +11,15 @@ import { publicProvider } from "wagmi/providers/public";
 
 const RainbowProvider = ({ children }: { children: ReactNode }) => {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.polygonMumbai],
+    [chain.polygonMumbai, chain.polygon],
     [
-    // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID! }),
+      // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID! }),
       publicProvider(),
     ]
   );
 
   const { connectors } = getDefaultWallets({
-    appName: "My RainbowKit App",
+    appName: "Scuderia Racing NFT",
     chains,
   });
 
