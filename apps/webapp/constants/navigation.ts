@@ -12,16 +12,12 @@ export const navItems: Array<INavItem> = [
       {
         label: "Mint",
         subLabel: "Mint Scuderia Racing NFTs",
-        href: "#",
+        href: "mint",
       },
       {
         label: "View & Stake",
         subLabel: "View your NFTs and stake them for utility",
-        href: "#",
-      },
-      {
-        label: "SCOOT Token",
-        subLabel: "Manage your $SCT balance"
+        href: "stake",
       }
     ],
   },

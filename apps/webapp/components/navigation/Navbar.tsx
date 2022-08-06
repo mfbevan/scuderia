@@ -8,6 +8,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Link,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { DesktopNav } from "./NavigationDesktop";
@@ -51,7 +52,14 @@ const Navbar = () => {
             color={useColorModeValue("gray.800", "white")}
             fontWeight="bold"
           >
-            Scuderia
+            <Link
+              href={"/"}
+              _hover={{
+                textDecoration: "none",
+              }}
+            >
+              Scuderia
+            </Link>
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
