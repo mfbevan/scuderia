@@ -41,14 +41,25 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         // ...
     }
 
+    /**
+     * @notice Sets the initial token id to start at 1 instead of 0
+     */
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
+    }
+
+    /**
+     * @notice Toggle whether nft minting is active
+     */
     function toggleSale() external onlyOwner {
         saleActive = !saleActive;
     }
 
     /**
-     * Sets the initial token id to start at 1 instead of 0
+     * @notice Transfer funds out of contract
+     * @param _recipient Receiver of funds
      */
-    function _startTokenId() internal pure override returns (uint256) {
-        return 1;
+    function withdraw(address _recipient) public onlyOwner {
+        payable(_recipient).transfer(address(this).balance);
     }
 }

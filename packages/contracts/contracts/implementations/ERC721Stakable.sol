@@ -3,6 +3,7 @@ pragma solidity 0.8.15;
 
 import "../interfaces/IStakable.sol";
 import "erc721a/contracts/ERC721A.sol";
+import "hardhat/console.sol";
 
 contract ERC721Stakable is IStakable, ERC721A {
     // Token Id => Token Staking Status
@@ -38,6 +39,25 @@ contract ERC721Stakable is IStakable, ERC721A {
             delete stakes[_tokens[i]];
         }
         emit Unstake(msg.sender, _tokens);
+    }
+
+    function _beforeTokenTransfers(
+        address from,
+        address to,
+        uint256 startTokenId,
+        uint256 quantity
+    ) internal view override {
+        console.log("before transfer hook");
+        for (uint256 i = 0; i < quantity; i++) {
+            if (stakes[startTokenId + i].timeStaked != 0)
+                revert CannotTransferStaked(startTokenId + i);
+        }
+    }
+
+    function burn(uint256 _tokenId) external {
+        if (stakes[_tokenId].timeStaked != 0)
+            revert CannotTransferStaked(_tokenId);
+        _burn(_tokenId, true);
     }
 
     /**

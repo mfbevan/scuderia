@@ -67,4 +67,9 @@ interface IStakable {
      * @notice The Token cannot be unstaked as it in still within its lockin period
      */
     error TokenInLockin(uint256 _tokenId);
+
+    /**
+     * Cannot execute action as this token is staked. This will be called if a transfer is made while the token is staked
+     */
+     error CannotTransferStaked(uint256 _tokenId);
 }
