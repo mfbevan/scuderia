@@ -47,7 +47,7 @@ contract ERC721Stakable is IStakable, ERC721A {
         uint256 startTokenId,
         uint256 quantity
     ) internal view override {
-        console.log("before transfer hook");
+        console.log("before transfer hook %s %s", startTokenId, quantity);
         for (uint256 i = 0; i < quantity; i++) {
             if (stakes[startTokenId + i].timeStaked != 0)
                 revert CannotTransferStaked(startTokenId + i);
@@ -57,6 +57,7 @@ contract ERC721Stakable is IStakable, ERC721A {
     function burn(uint256 _tokenId) external {
         if (stakes[_tokenId].timeStaked != 0)
             revert CannotTransferStaked(_tokenId);
+        console.log("burn");
         _burn(_tokenId, true);
     }
 
