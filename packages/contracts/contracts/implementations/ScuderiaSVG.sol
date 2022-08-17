@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.15;
+pragma solidity 0.8.16;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
 
-library ScuderiaSVG {
+contract ScuderiaSVG {
     function getSVG() public view returns (string memory) {
         bytes memory image = abi.encodePacked(
             "data:image/svg+xml;base64,",
