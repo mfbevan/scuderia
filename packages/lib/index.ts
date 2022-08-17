@@ -1,4 +1,4 @@
 export * from "./types";
-export * from "./uri";
+export * from "./helpers/uri";
 export * from "./constants"
 export * from "./config";
