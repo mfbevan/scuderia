@@ -1,5 +1,6 @@
+
 export enum Network {
-  "polygon",
-  "mumbai",
-  "localhost",
+  Polygon = "polygon",
+  Mumbai = "mumbai",
+  Localhost = "localhost",
 }
