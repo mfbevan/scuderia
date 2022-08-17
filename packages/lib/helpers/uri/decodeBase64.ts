@@ -1,9 +1,5 @@
 import { IScuderiaNFT } from "../types";
 
-interface IParsedJSON {
-  
-}
-
 /**
  * Decode token URI into Scuderia NFT metadata
  * @param tokenURI Base64 encoded tokenURI containing token metadata
@@ -15,5 +11,5 @@ export const decodeBase64 = (tokenURI: string) => {
 
   const obj = JSON.parse(buffer.toString());
 
-  return obj
+  return obj as IScuderiaNFT
 }
