@@ -4,7 +4,15 @@ export interface IScuderiaNFT {
    */
   tokenId: string;
   /**
-   * SVG image decoded from on-chain library
+   * Name of the token
+   */
+  name: string;
+  /**
+   * Generic token description
+   */
+  description: string;
+  /**
+   * SVG image decoded from on-chain library (encoded in SVG Base64)
    */
   image: string;
   /**
