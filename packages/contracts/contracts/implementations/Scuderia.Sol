@@ -3,6 +3,7 @@ pragma solidity 0.8.15;
 
 import "../interfaces/IScuderia.sol";
 import "./ERC721Stakable.sol";
+import "./ScuderiaSVG.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "erc721a/contracts/ERC721A.sol";
@@ -39,6 +40,23 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
 
     function secondaryMint(uint256 _blueprintId) external {
         // ...
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        return _buildURI();
+    }
+
+    /**
+     * @notice Build the SVG URI for the given token
+     */
+    function _buildURI() internal view returns (string memory) {
+        return ScuderiaSVG.getSVG();
     }
 
     /**
