@@ -3,12 +3,13 @@ pragma solidity 0.8.16;
 
 import "../interfaces/IScuderia.sol";
 import "./ERC721Stakable.sol";
-import "./ScuderiaSVG.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
+
 import "erc721a/contracts/ERC721A.sol";
 
-contract Scuderia is IScuderia, Ownable, ERC721Stakable, ScuderiaSVG {
+contract Scuderia is IScuderia, Ownable, ERC721Stakable {
     uint256 constant MAX_SUPPLY_GENESIS = 5000;
     uint256 constant MAX_SUPPLY_SECONDARY = 10000;
     uint64 MINT_PRICE = 0.1 ether;
@@ -17,6 +18,9 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable, ScuderiaSVG {
 
     string private tokenBaseURI;
     string private contractURI;
+
+    // tokenId => metadataSeed (randomised on mint)
+    mapping(uint256 => uint256) metadataSeed;
 
     bool public saleActive = false;
 
@@ -42,6 +46,10 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable, ScuderiaSVG {
         // ...
     }
 
+    /**
+     * @notice Build the metadata URI for supplied token
+     * @param tokenId the tokenId of the nft to generate metadata for
+     */
     function tokenURI(uint256 tokenId)
         public
         view
@@ -49,14 +57,47 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable, ScuderiaSVG {
         override
         returns (string memory)
     {
-        return _buildURI();
+        uint256 seed = 10000;
+        return _buildMetadata(seed);
     }
 
-    /**
-     * @notice Build the SVG URI for the given token
-     */
-    function _buildURI() internal view returns (string memory) {
-        return ScuderiaSVG.getSVG();
+    function _buildMetadata(uint256 seed) internal view returns (string memory) {
+        bytes memory image = abi.encodePacked(
+            "data:image/svg+xml;base64,",
+            Base64.encode(
+                bytes(
+                    abi.encodePacked(
+                        '<?xml version="1.0" encoding="UTF-8"?>',
+                        '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid meet">',
+                        '<style type="text/css"><![CDATA[text { font-family: monospace; font-size: 21px;} .h1 {font-size: 40px; font-weight: 600;}]]></style>',
+                        '<rect width="400" height="400" fill="#ffcfcf" />',
+                        '<text class="h1" x="50" y="70">Scuderia NFT</text>',
+                        unicode'<text x="100" y="240" style="font-size:100px;">🏎️💨</text>',
+                        '<text x="20" y="350" style="font-size:28px;"> ',
+                        "</text>",
+                        '<text x="20" y="380" style="font-size:14px;">0x',
+                        "</text>",
+                        "</svg>"
+                    )
+                )
+            )
+        );
+
+        return
+            string(
+                abi.encodePacked(
+                    "data:application/json;base64,",
+                    Base64.encode(
+                        bytes(
+                            abi.encodePacked(
+                                '{"name":"Scuderia NFT", "image":"',
+                                image,
+                                unicode'", "description": "Scuderia is a fully on-chain racing NFT ecosystem that allows minting, metadata and image generation, racing and betting, all running on Polygon."}'
+                            )
+                        )
+                    )
+                )
+            );
     }
 
     /**

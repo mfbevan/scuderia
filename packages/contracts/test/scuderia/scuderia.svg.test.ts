@@ -5,6 +5,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber, constants } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
+import { decodeBase64 } from "@scuderia/lib";
 
 use(chaiAsPromised);
 
@@ -30,11 +31,15 @@ describe.only("Scuderia Racing ERC721 SVG Generation", () => {
 
     it("should return an SVG for the token", async () => {
       await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
+      const uri = await Scuderia.tokenURI(1);
 
-      const svg = await Scuderia.tokenURI(1);
+      
+
+      console.log(decodeBase64(uri))
+
     });
-    it("should revert if the token does not exist", async () => {
-      throw Error("not implemented")
-    });
+    // it("should revert if the token does not exist", async () => {
+    //   throw Error("not implemented")
+    // });
   });
 });

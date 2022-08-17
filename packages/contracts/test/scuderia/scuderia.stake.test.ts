@@ -26,7 +26,7 @@ describe("Scuderia Racing ERC721 Staking", () => {
     Scuderia = await ethers.getContract("Scuderia");
   });
 
-  describe.only("stake", () => {
+  describe("stake", () => {
     beforeEach(async () => {
       await Scuderia.toggleSale();
       await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
