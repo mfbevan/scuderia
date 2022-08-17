@@ -5,21 +5,22 @@ import {
   RainbowKitProvider,
   lightTheme,
 } from "@rainbow-me/rainbowkit";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { chain, configureChains, createClient, WagmiConfig, allChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { config } from "../config/config";
 
 const RainbowProvider = ({ children }: { children: ReactNode }) => {
   const { chains, provider } = configureChains(
-    [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+    [config.chain],
     [
-      // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID }),
+      // alchemyProvider({ alchemyId: process.env.ALCHEMY_ID! }),
       publicProvider(),
     ]
   );
 
   const { connectors } = getDefaultWallets({
-    appName: "My RainbowKit App",
+    appName: "Scuderia Racing NFT",
     chains,
   });
 
