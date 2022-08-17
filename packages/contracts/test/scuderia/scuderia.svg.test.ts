@@ -2,7 +2,6 @@ import { ethers, deployments } from "hardhat";
 import { expect, use } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { BigNumber, constants } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
 import { decodeBase64 } from "@scuderia/lib";

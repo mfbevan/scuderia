@@ -57,13 +57,12 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         override
         returns (string memory)
     {
-        uint256 seed = 10000;
-        return _buildMetadata(seed);
+        return _buildMetadata(tokenId);
     }
 
-    function _buildMetadata(uint256 seed)
+    function _buildMetadata(uint256 tokenId)
         internal
-        view
+        pure
         returns (string memory)
     {
         bytes memory image = abi.encodePacked(
@@ -96,6 +95,8 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
                             abi.encodePacked(
                                 '{"name":"Scuderia NFT", "image":"',
                                 image,
+                                '", "tokenId":"',
+                                _toString(tokenId),
                                 unicode'", "description": "Scuderia is a fully on-chain racing NFT ecosystem that allows minting, metadata and image generation, racing and betting, all running on Polygon."}'
                             )
                         )

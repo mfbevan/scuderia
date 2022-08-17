@@ -19,7 +19,7 @@ const polygonMumbai: IConfig = {
 };
 
 const localhost: IConfig = {
-  chain: chain.localhost,
+  chain: chain.hardhat,
 };
 
 const ConfigRecord: Record<Network, IConfig> = {
