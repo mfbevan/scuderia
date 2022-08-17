@@ -71,7 +71,7 @@ describe("Scuderia Racing ERC721 Minting", () => {
       await expect(Scuderia.mint(0)).to.be.revertedWithCustomError(
         Scuderia,
         "ZeroQuantity"
-      ); 
+      );
     });
     it("should cost 0.1 ETH", async () => {
       const initialBalance = await alice.getBalance();
@@ -102,6 +102,16 @@ describe("Scuderia Racing ERC721 Minting", () => {
         expect(await Scuderia.totalSupply()).to.eq(0);
         await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
         expect(await Scuderia.totalSupply()).to.eq(numToMint);
+      });
+    });
+
+    describe.only("walletOf", () => {
+      it("should return the token id of tokens owned by the wallet", async () => {
+        await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
+        expect(await Scuderia.connect(alice).walletOf(alice.address)).to.eql([
+          BigNumber.from(1),
+          BigNumber.from(2),
+        ]);
       });
     });
   });
