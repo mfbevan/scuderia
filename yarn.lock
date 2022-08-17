@@ -5952,6 +5952,15 @@ eslint-config-airbnb@18.2.1:
     object.assign "^4.1.2"
     object.entries "^1.1.2"
 
+eslint-config-custom@latest:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-custom/-/eslint-config-custom-0.0.0.tgz#7829bdd98e657a63b03377538b5675c811247cf0"
+  integrity sha512-kwCw78yisbgKdJBJ5qooPmpBYDphDfM2oxSROmtfOwBXBwXuRiSV3suO01W3mVLEFpmQZxMWd/qajKpJhkKSug==
+  dependencies:
+    eslint-config-next "^12.0.8"
+    eslint-config-prettier "^8.3.0"
+    eslint-plugin-react "7.28.0"
+
 eslint-config-labrys@^0.6.4:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/eslint-config-labrys/-/eslint-config-labrys-0.6.5.tgz#a0b74cc8160b3ce65fab85b6e2743f8c344d553c"

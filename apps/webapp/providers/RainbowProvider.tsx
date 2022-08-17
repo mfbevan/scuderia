@@ -11,7 +11,6 @@ import { publicProvider } from "wagmi/providers/public";
 import { config } from "../config/config";
 
 const RainbowProvider = ({ children }: { children: ReactNode }) => {
-  console.log(allChains);
   const { chains, provider } = configureChains(
     [config.chain],
     [
