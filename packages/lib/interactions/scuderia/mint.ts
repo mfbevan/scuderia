@@ -1,6 +1,6 @@
 import { Signer } from "ethers";
 import { parseEther } from "ethers/lib/utils";
-import { ScuderiaContract } from "../../../contracts/deployments";
+import { ScuderiaContract } from "@scuderia/contracts/deployments";
 
 const MINT_PRICE = parseEther("0.1");
 

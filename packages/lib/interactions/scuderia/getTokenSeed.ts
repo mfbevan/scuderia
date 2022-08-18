@@ -1,6 +1,5 @@
-import { BigNumber, Signer } from "ethers";
-import { ScuderiaContract } from "../../../contracts/deployments";
-import { decodeBase64 } from "../../helpers";
+import { Signer } from "ethers";
+import { ScuderiaContract } from "@scuderia/contracts/deployments";
 
 interface IMint {
   /**
