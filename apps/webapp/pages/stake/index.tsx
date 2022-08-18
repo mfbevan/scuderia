@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { Heading, Center, Wrap, VStack } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { walletOf, getTokenData } from "@scuderia/lib";
+import { walletOf, getTokenData, getTokenSeed } from "@scuderia/lib";
 import { IScuderiaNFT } from "@scuderia/lib/types";
 import { Signer } from "ethers";
 import { useSigner } from "wagmi";
@@ -24,6 +24,13 @@ const Stake: NextPage = () => {
           getTokenData({ signer, tokenId })
         )
       );
+      const seeds = await Promise.all(
+        tokenIds.map(async (tokenId: number) =>
+          getTokenSeed({ signer, tokenId })
+        )
+      );
+
+      console.log(seeds);
       setTokens(tokenData);
       console.log(tokenData)
     };

@@ -5,6 +5,8 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
 import { decodeBase64, IScuderiaNFT } from "@scuderia/lib";
+import { erc721A, IERC721A__factory } from "typechain";
+import { erc721ASol } from "typechain/erc721a/contracts";
 
 use(chaiAsPromised);
 
@@ -24,14 +26,12 @@ describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
 
     await deployments.fixture("_scuderia");
     Scuderia = await ethers.getContract("Scuderia");
+
+    await Scuderia.toggleSale();
+    await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
   });
 
-  describe("ScuderiaMetadata", () => {
-    beforeEach(async () => {
-      await Scuderia.toggleSale();
-      await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
-    });
-
+  describe("Build Metadata", () => {
     it("should return the token metadata", async () => {
       const uri = await Scuderia.tokenURI(1);
       const metadata = decodeBase64(uri);
@@ -40,8 +40,17 @@ describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
       expect(metadata.tokenId).to.eq(1);
       expect(metadata.image.startsWith("data:image/svg+xml;base64")).to.be.true;
     });
-    // it("should revert if the token does not exist", async () => {
-    //   throw Error("not implemented")
-    // });
+    it("should revert if the token does not exist", async () => {
+      await expect(Scuderia.tokenURI(2)).to.be.revertedWithCustomError(
+        Scuderia,
+        "URIQueryForNonexistentToken"
+      );
+    });
   });
+
+  describe("Convert seed to metadata", () => {
+    it("should extract a 6 digit hex color code", async () => {
+      throw Error("not tested")
+    })
+  })
 });

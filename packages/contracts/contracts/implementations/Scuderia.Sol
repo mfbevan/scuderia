@@ -42,8 +42,11 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         if (msg.value != MINT_PRICE * _quantity)
             revert IncorrectPaymentAmount();
 
-        for (uint256 i = genesisSupply; i < _quantity + _quantity; i++) {
-            metadataSeed[i] = ScuderiaMetadata.generateMetadataSeed(i);
+        for (uint256 i = 1; i <= _quantity; i++) {
+            uint256 tokenId = genesisSupply + i;
+            metadataSeed[tokenId] = ScuderiaMetadata.generateMetadataSeed(
+                tokenId
+            );
         }
         genesisSupply += _quantity;
 
@@ -65,7 +68,9 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         override
         returns (string memory)
     {
-        return ScuderiaMetadata.buildMetadataURI(tokenId, metadataSeed[tokenId]);
+        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
+        return
+            ScuderiaMetadata.buildMetadataURI(tokenId, metadataSeed[tokenId]);
     }
 
     /**
