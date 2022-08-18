@@ -4,7 +4,6 @@
 # hardhat
 artifacts
 cache
-deployments
 node_modules
 
 
@@ -26,8 +25,8 @@ node_modules/
 yalc.lock
 
 contractsInfo.json
-deployments/hardhat
-deployments/localhost
+# deployments/hardhat
+# deployments/localhost
 
 # don't push the environment vars!
 .env
