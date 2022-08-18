@@ -11,7 +11,7 @@ use(chaiAsPromised);
 const { deploy } = deployments;
 const MINT_PRICE = parseEther("0.1");
 
-describe.only("Scuderia Racing ERC721 Minting", () => {
+describe("Scuderia Racing ERC721 Minting", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
