@@ -20,9 +20,9 @@ interface IScuderia {
     error SaleInactive();
 
     /**
-     * @notice making a function call with a zero quantity
+     * @notice making a function call with a zero quantity or quantity greater than the max per mint
      */
-    error ZeroQuantity();
+    error InvalidMintQuantity();
 
     /**
      * @notice Incorrect payment amount

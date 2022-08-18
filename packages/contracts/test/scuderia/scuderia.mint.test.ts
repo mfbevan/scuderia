@@ -11,7 +11,7 @@ use(chaiAsPromised);
 const { deploy } = deployments;
 const MINT_PRICE = parseEther("0.1");
 
-describe("Scuderia Racing ERC721 Minting", () => {
+describe.only("Scuderia Racing ERC721 Minting", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
@@ -70,13 +70,22 @@ describe("Scuderia Racing ERC721 Minting", () => {
     it("should revert on a zero quantity", async () => {
       await expect(Scuderia.mint(0)).to.be.revertedWithCustomError(
         Scuderia,
-        "ZeroQuantity"
+        "InvalidMintQuantity"
       );
+    });
+    it("should revert on a greater than max mint quantity", async () => {
+      await expect(
+        Scuderia.mint(11, { value: MINT_PRICE.mul(11) })
+      ).to.be.revertedWithCustomError(Scuderia, "InvalidMintQuantity");
     });
     it("should cost 0.1 ETH", async () => {
       const initialBalance = await alice.getBalance();
       await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
       expect(initialBalance.sub(await alice.getBalance())).to.eq(MINT_PRICE);
+    });
+    it("should randomise metadata on mint", async () => {
+      await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
+      expect(await Scuderia.metadataSeed(1)).to.be.properHex(64);
     });
 
     describe("multiple NFTs", () => {
@@ -100,12 +109,22 @@ describe("Scuderia Racing ERC721 Minting", () => {
       });
       it("should increase total supply", async () => {
         expect(await Scuderia.totalSupply()).to.eq(0);
+        expect(await Scuderia.genesisSupply()).to.eq(0);
         await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
         expect(await Scuderia.totalSupply()).to.eq(numToMint);
+        expect(await Scuderia.genesisSupply()).to.eq(numToMint)
+      });
+      it("should randomise different metadata for each mint", async () => {
+        await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
+        const mintA = await Scuderia.metadataSeed(1);
+        const mintB = await Scuderia.metadataSeed(2);
+        expect(mintA).to.be.properHex(64);
+        expect(mintB).to.be.properHex(64)
+        expect(mintA).to.not.eql(mintB)
       });
     });
 
-    describe.only("walletOf", () => {
+    describe("walletOf", () => {
       it("should return the token id of tokens owned by the wallet", async () => {
         await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
         expect(await Scuderia.connect(alice).walletOf(alice.address)).to.eql([

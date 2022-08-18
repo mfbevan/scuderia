@@ -10,7 +10,7 @@ use(chaiAsPromised);
 
 const MINT_PRICE = parseEther("0.1");
 
-describe.only("Scuderia Racing ERC721 SVG Generation", () => {
+describe("Scuderia Racing ERC721 SVG Generation", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;

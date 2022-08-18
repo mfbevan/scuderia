@@ -12,15 +12,16 @@ import "erc721a/contracts/ERC721A.sol";
 contract Scuderia is IScuderia, Ownable, ERC721Stakable {
     uint256 constant MAX_SUPPLY_GENESIS = 5000;
     uint256 constant MAX_SUPPLY_SECONDARY = 10000;
+    uint256 constant MAX_PER_MINT = 10;
+    uint256 public genesisSupply = 0;
+    uint256 public secondarySupply = 0;
     uint64 MINT_PRICE = 0.1 ether;
-    uint8 genesisSupply = 0;
-    uint8 secondarySupply = 0;
 
     string private tokenBaseURI;
     string private contractURI;
 
     // tokenId => metadataSeed (randomised on mint)
-    mapping(uint256 => uint256) metadataSeed;
+    mapping(uint256 => bytes32) public metadataSeed;
 
     bool public saleActive = false;
 
@@ -33,12 +34,18 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
 
     function mint(uint256 _quantity) external payable {
         if (!saleActive) revert SaleInactive();
-        if (_quantity == 0) revert ZeroQuantity();
         if (genesisSupply + _quantity > MAX_SUPPLY_GENESIS)
             revert SupplyWillBeExceeded();
+        if (_quantity == 0 || _quantity > MAX_PER_MINT)
+            revert InvalidMintQuantity();
         if (msg.value != MINT_PRICE * _quantity)
             revert IncorrectPaymentAmount();
-        genesisSupply++;
+
+        for (uint256 i = genesisSupply; i < _quantity + _quantity; i++) {
+            metadataSeed[i] = _randomiseMetadata(i);
+        }
+        genesisSupply += _quantity;
+
         _safeMint(msg.sender, _quantity);
     }
 
@@ -60,6 +67,26 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         return _buildMetadata(tokenId);
     }
 
+    /**
+     * @notice Randomise metadata for Scuderia token stats when minting
+     * @dev TODO: use ChainLink VRF to get a non-deterministic random value
+     */
+    function _randomiseMetadata(uint256 tokenId)
+        internal
+        view
+        returns (bytes32)
+    {
+        return
+            keccak256(
+                abi.encodePacked(
+                    block.timestamp,
+                    block.difficulty,
+                    msg.sender,
+                    tokenId
+                )
+            );
+    }
+
     function _buildMetadata(uint256 tokenId)
         internal
         pure
@@ -78,7 +105,8 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
                         unicode'<text x="100" y="240" style="font-size:100px;">🏎️💨</text>',
                         '<text x="20" y="350" style="font-size:28px;"> ',
                         "</text>",
-                        '<text x="20" y="380" style="font-size:14px;">0x',
+                        '<text x="20" y="380" style="font-size:14px;">',
+                        "Scoot Scoot",
                         "</text>",
                         "</svg>"
                     )
