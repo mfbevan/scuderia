@@ -35,10 +35,15 @@ describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
     it("should return the token metadata", async () => {
       const uri = await Scuderia.tokenURI(1);
       const metadata = decodeBase64(uri);
+      console.log(metadata.image)
       expect(metadata.name).to.eq(name);
       expect(metadata.description).to.eq(description);
       expect(metadata.tokenId).to.eq(1);
       expect(metadata.image.startsWith("data:image/svg+xml;base64")).to.be.true;
+      expect(metadata.speed).to.be.greaterThan(30);
+      expect(metadata.acceleration).to.be.greaterThan(30);
+      expect(metadata.handling).to.be.greaterThan(30);
+      expect(metadata.reliability).to.be.greaterThan(30);
     });
     it("should revert if the token does not exist", async () => {
       await expect(Scuderia.tokenURI(2)).to.be.revertedWithCustomError(
@@ -47,10 +52,4 @@ describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
       );
     });
   });
-
-  describe("Convert seed to metadata", () => {
-    it("should extract a 6 digit hex color code", async () => {
-      throw Error("not tested")
-    })
-  })
 });
