@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import { RainbowProvider } from "../providers/RainbowProvider";
 import { Metadata } from "../providers/Metadata";
 import { Navbar } from "../components/navigation";
+import WalletContextProvider from "../providers/context/WalletContextProvider";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <RainbowProvider>
         <Metadata />
         <Navbar />
-        <Component {...pageProps} />
+        <WalletContextProvider>
+          <Component {...pageProps} />
+        </WalletContextProvider>
       </RainbowProvider>
     </ChakraProvider>
   );

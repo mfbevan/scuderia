@@ -1,7 +1,7 @@
 import { Signer } from "ethers";
 import { ScuderiaContract } from "@scuderia/contracts/deployments";
 
-interface IMint {
+interface IGetTokenSeed {
   /**
    * Wallet to sign transaction
    */
@@ -15,6 +15,6 @@ interface IMint {
 /**
  * Get Scuderia NFT seed for metadata generation
  */
-export const getTokenSeed = async ({ signer, tokenId }: IMint) => {
+export const getTokenSeed = async ({ signer, tokenId }: IGetTokenSeed) => {
   return ScuderiaContract(signer).metadataSeed(tokenId);
 };
