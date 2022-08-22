@@ -141,11 +141,25 @@ describe("Scuderia Racing ERC721 Minting", () => {
     describe("walletOf", () => {
       it("should return the token id of tokens owned by the wallet", async () => {
         await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
+        await Scuderia.connect(bob).mint(1, { value: MINT_PRICE });
         expect(await Scuderia.connect(alice).walletOf(alice.address)).to.eql([
           BigNumber.from(1),
           BigNumber.from(2),
         ]);
       });
+      it("should return empty array if the wallet has no tokens", async () => {
+        expect(await Scuderia.connect(alice).walletOf(bob.address)).to.eql([]);
+      });
+    });
+  });
+
+  describe("Secondary minting", () => {
+    beforeEach(async () => {
+      await Scuderia.toggleSale();
+    });
+
+    it("should mint a new token", async () => {
+      await Scuderia.connect(alice).secondaryMint(1);
     });
   });
 });

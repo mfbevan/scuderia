@@ -4,9 +4,7 @@ import chaiAsPromised from "chai-as-promised";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
-import { decodeBase64, IScuderiaNFT } from "@scuderia/lib";
-import { erc721A, IERC721A__factory } from "typechain";
-import { erc721ASol } from "typechain/erc721a/contracts";
+import { decodeBase64 } from "@scuderia/lib";
 
 use(chaiAsPromised);
 

@@ -41,7 +41,7 @@ contract ERC721Stakable is IStakable, ERC721A {
         emit Unstake(msg.sender, _tokens);
     }
 
-function burn(uint256 _tokenId) external {
+    function burn(uint256 _tokenId) external {
         if (stakes[_tokenId].timeStaked != 0)
             revert CannotTransferStaked(_tokenId);
         _burn(_tokenId, true);

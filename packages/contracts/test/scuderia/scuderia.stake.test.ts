@@ -5,7 +5,7 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
 import { StakingLockin, StakingLockinOption } from "@scuderia/lib/constants";
-import { BigNumber } from "ethers";
+import { BigNumber, constants } from "ethers";
 
 use(chaiAsPromised);
 
@@ -136,6 +136,11 @@ describe("Scuderia Racing ERC721 Staking", () => {
       await expect(
         Scuderia.connect(alice).burn(1)
       ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
+    });
+    it("should all burning while not staked", async () => {
+      await expect(Scuderia.connect(alice).burn(1))
+        .to.emit(Scuderia, "Transfer")
+        .withArgs(alice.address, constants.AddressZero, 1);
     });
   });
 

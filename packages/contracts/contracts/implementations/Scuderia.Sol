@@ -94,7 +94,6 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
 
             for (uint256 tokenId = 1; tokenId <= _totalMinted(); tokenId++) {
                 if (index == tokenCount) break;
-
                 if (ownerOf(tokenId) == _walletOwner) {
                     result[index] = tokenId;
                     index++;
