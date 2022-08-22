@@ -26,7 +26,7 @@ const getBlockTimestamp = async () => {
   return timestamp;
 };
 
-describe.only("Scuderia Racing ERC721 Staking", () => {
+describe("Scuderia Racing ERC721 Staking", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;

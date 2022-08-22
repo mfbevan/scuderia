@@ -80,8 +80,14 @@ describe("Scuderia Racing ERC721 Minting", () => {
     });
     it("should cost 0.1 ETH", async () => {
       const initialBalance = await alice.getBalance();
-      await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
-      expect(initialBalance.sub(await alice.getBalance())).to.eq(MINT_PRICE);
+      const tx = await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
+      const receipt = await tx.wait();
+      const gasUsed = BigNumber.from(receipt.cumulativeGasUsed).mul(
+        BigNumber.from(receipt.effectiveGasPrice)
+      );
+      expect(initialBalance.sub(await alice.getBalance()).sub(gasUsed)).to.eq(
+        MINT_PRICE
+      );
     });
     it("should randomise metadata on mint", async () => {
       await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
@@ -94,8 +100,16 @@ describe("Scuderia Racing ERC721 Minting", () => {
 
       it(`should cost ${0.1 * numToMint} ETH`, async () => {
         const initialBalance = await alice.getBalance();
-        await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
-        expect(initialBalance.sub(await alice.getBalance())).to.eq(mintCost);
+        const tx = await Scuderia.connect(alice).mint(numToMint, {
+          value: mintCost,
+        });
+        const receipt = await tx.wait();
+        const gasUsed = BigNumber.from(receipt.cumulativeGasUsed).mul(
+          BigNumber.from(receipt.effectiveGasPrice)
+        );
+        expect(initialBalance.sub(await alice.getBalance()).sub(gasUsed)).to.eq(
+          mintCost
+        );
       });
       it("should revert when no payment made", async () => {
         await expect(
@@ -112,15 +126,15 @@ describe("Scuderia Racing ERC721 Minting", () => {
         expect(await Scuderia.genesisSupply()).to.eq(0);
         await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
         expect(await Scuderia.totalSupply()).to.eq(numToMint);
-        expect(await Scuderia.genesisSupply()).to.eq(numToMint)
+        expect(await Scuderia.genesisSupply()).to.eq(numToMint);
       });
       it("should randomise different metadata for each mint", async () => {
         await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
         const mintA = await Scuderia.metadataSeed(1);
         const mintB = await Scuderia.metadataSeed(2);
         expect(mintA).to.be.properHex(64);
-        expect(mintB).to.be.properHex(64)
-        expect(mintA).to.not.eql(mintB)
+        expect(mintB).to.be.properHex(64);
+        expect(mintA).to.not.eql(mintB);
       });
     });
 
