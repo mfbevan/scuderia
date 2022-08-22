@@ -7,9 +7,9 @@ import { TokenCard } from "./cards/TokenCard";
 const ScuderiaTokenGrid = () => {
   const { scuderia, loadingScuderia } = useContext(WalletContext);
 
-  if (loadingScuderia) return <Spinner />
+  if (loadingScuderia) return <Spinner />;
   return (
-    <Wrap spacing={10} justify="center" pb={10} px={10}>
+    <Wrap spacing={10} justify="center" pt={4} pb={10} px={10}>
       {scuderia.map((_tkn, index) => (
         <TokenCard key={`token-${index}`} token={_tkn} />
       ))}

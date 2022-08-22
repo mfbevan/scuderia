@@ -12,17 +12,18 @@ const StakingContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
 
   const [selected, setSelected] = useState<IScuderiaNFT[]>([]);
-
   const select = (token: IScuderiaNFT) => {
-    console.log("b4", selected)
+    console.log("b4", selected);
     if (selected.includes(token)) {
       setSelected(selected.filter((_tkn) => _tkn !== token));
     } else {
       setSelected([...selected, token]);
     }
 
-    console.log("after", selected)
+    console.log("after", selected);
   };
+
+  const [loading, setLoading] = useState(false);
 
   const stake = async () => {
     // ...
@@ -37,6 +38,9 @@ const StakingContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         select,
         selected,
+        stake,
+        unstake,
+        loading,
       }}
     >
       {children}

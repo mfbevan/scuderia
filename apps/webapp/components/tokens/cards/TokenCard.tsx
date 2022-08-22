@@ -13,7 +13,8 @@ import StakingContext from "../../../providers/context/StakingContext";
 import ScuderiaTokenModal from "../ScuderiaTokenModal";
 
 export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
-  const { select } = useContext(StakingContext);
+  const { select, selected } = useContext(StakingContext);
+  const isSelected = selected.includes(token);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -26,7 +27,7 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
       maxW={"220px"}
       w={"full"}
       bg={useColorModeValue("white", "gray.800")}
-      boxShadow={"lg"}
+      boxShadow={isSelected ? "0 0 8px 4px #f59090" : "lg"}
       rounded={"lg"}
       pos={"relative"}
       zIndex={1}
@@ -51,7 +52,7 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
         }}
       >
         <Image
-          onClick={onOpen}
+          // onClick={onOpen}
           rounded={"lg"}
           height={180}
           width={180}
