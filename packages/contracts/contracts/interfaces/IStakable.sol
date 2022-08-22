@@ -47,7 +47,14 @@ interface IStakable {
      * @param _tokens array of token ids to unstake
      */
     function unstake(uint256[] memory _tokens) external;
-    
+
+    /**
+     * @notice Burn a token to the zero address
+     * @dev This transaction will revert if the token is currently staked
+     * @param _tokenId the token to burn
+     */
+    function burn(uint256 _tokenId) external;
+
     /**
      * @notice The caller is not the owner of the token
      */
@@ -71,5 +78,5 @@ interface IStakable {
     /**
      * Cannot execute action as this token is staked. This will be called if a transfer is made while the token is staked
      */
-     error CannotTransferStaked(uint256 _tokenId);
+    error CannotTransferStaked(uint256 _tokenId);
 }

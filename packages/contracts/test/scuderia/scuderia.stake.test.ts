@@ -5,15 +5,28 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { parseEther } from "ethers/lib/utils";
 import { Scuderia } from "typechain/contracts/implementations";
 import { StakingLockin, StakingLockinOption } from "@scuderia/lib/constants";
+import { BigNumber } from "ethers";
 
 use(chaiAsPromised);
 
 const MINT_PRICE = parseEther("0.1");
 
+/**
+ * Advance evm time by number of @param seconds
+ */
 const advanceEvmTime = async (seconds: number) =>
   await network.provider.send("evm_increaseTime", [seconds]);
 
-describe("Scuderia Racing ERC721 Staking", () => {
+/**
+ * Get the timestamp of the current block
+ */
+const getBlockTimestamp = async () => {
+  const blockNumber = await network.provider.send("eth_blockNumber");
+  const { timestamp } = await ethers.provider.getBlock(blockNumber);
+  return timestamp;
+};
+
+describe.only("Scuderia Racing ERC721 Staking", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
@@ -38,6 +51,11 @@ describe("Scuderia Racing ERC721 Staking", () => {
       )
         .to.emit(Scuderia, "Stake")
         .withArgs(alice.address, [1], StakingLockin.STAKE_30_DAYS);
+
+      expect(await Scuderia.stakes(1)).to.eql([
+        BigNumber.from(await getBlockTimestamp()),
+        BigNumber.from(StakingLockin.STAKE_30_DAYS),
+      ]);
     });
     it("should support multiple stakes", async () => {
       await expect(
@@ -88,12 +106,33 @@ describe("Scuderia Racing ERC721 Staking", () => {
       ).to.be.revertedWithCustomError(Scuderia, "TokenAlreadyStaked");
     });
 
-    it("should prevent transfers while staked", async () => {
+    it("should prevent safe transfers while staked", async () => {
+      await Scuderia.connect(alice).stake(
+        [1],
+        StakingLockinOption.STAKE_30_DAYS
+      );
       await expect(
-        Scuderia.connect(alice)
+        Scuderia.connect(alice)["safeTransferFrom(address,address,uint256)"](
+          alice.address,
+          bob.address,
+          1
+        )
+      ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
+    });
+    it("should prevent transfer while staked", async () => {
+      await Scuderia.connect(alice).stake(
+        [1],
+        StakingLockinOption.STAKE_30_DAYS
+      );
+      await expect(
+        Scuderia.connect(alice).transferFrom(alice.address, bob.address, 1)
       ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
     });
     it("should prevent burning while staked", async () => {
+      await Scuderia.connect(alice).stake(
+        [1],
+        StakingLockinOption.STAKE_30_DAYS
+      );
       await expect(
         Scuderia.connect(alice).burn(1)
       ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
@@ -136,6 +175,15 @@ describe("Scuderia Racing ERC721 Staking", () => {
       await expect(
         Scuderia.connect(alice).unstake([3])
       ).to.be.revertedWithCustomError(Scuderia, "TokenNotStaked");
+    });
+    it("should prevent transferring multiple tokens while staked", async () => {
+      await expect(
+        Scuderia.connect(alice)["safeTransferFrom(address,address,uint256)"](
+          alice.address,
+          bob.address,
+          1
+        )
+      ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
     });
   });
 });

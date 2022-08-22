@@ -15,7 +15,7 @@ const name = "Scuderia NFT";
 const description =
   "Scuderia is a fully on-chain racing NFT ecosystem that allows minting, metadata and image generation, racing and betting, all running on Polygon.";
 
-describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
+describe("Scuderia Racing ERC721 Metadata Generation", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
@@ -35,7 +35,6 @@ describe.only("Scuderia Racing ERC721 Metadata Generation", () => {
     it("should return the token metadata", async () => {
       const uri = await Scuderia.tokenURI(1);
       const metadata = decodeBase64(uri);
-      console.log(metadata.image)
       expect(metadata.name).to.eq(name);
       expect(metadata.description).to.eq(description);
       expect(metadata.tokenId).to.eq(1);

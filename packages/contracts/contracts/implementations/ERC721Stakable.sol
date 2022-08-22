@@ -41,24 +41,27 @@ contract ERC721Stakable is IStakable, ERC721A {
         emit Unstake(msg.sender, _tokens);
     }
 
+function burn(uint256 _tokenId) external {
+        if (stakes[_tokenId].timeStaked != 0)
+            revert CannotTransferStaked(_tokenId);
+        _burn(_tokenId, true);
+    }
+
+    /**
+     * Prevent transfers while a token is staked.
+     * Will allow if transfer is from the zero address as this is a mint transaction
+     */
     function _beforeTokenTransfers(
         address from,
-        address to,
+        address,
         uint256 startTokenId,
         uint256 quantity
     ) internal view override {
-        console.log("before transfer hook %s %s", startTokenId, quantity);
+        if (from == address(0)) return;
         for (uint256 i = 0; i < quantity; i++) {
             if (stakes[startTokenId + i].timeStaked != 0)
                 revert CannotTransferStaked(startTokenId + i);
         }
-    }
-
-    function burn(uint256 _tokenId) external {
-        if (stakes[_tokenId].timeStaked != 0)
-            revert CannotTransferStaked(_tokenId);
-        console.log("burn");
-        _burn(_tokenId, true);
     }
 
     /**
