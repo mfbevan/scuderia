@@ -123,6 +123,37 @@ const _abi = [
         name: "_tokens",
         type: "uint256[]",
       },
+    ],
+    name: "getStakeStatus",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint64",
+            name: "timeStaked",
+            type: "uint64",
+          },
+          {
+            internalType: "uint64",
+            name: "lockinPeriod",
+            type: "uint64",
+          },
+        ],
+        internalType: "struct IStakable.StakedToken[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256[]",
+        name: "_tokens",
+        type: "uint256[]",
+      },
       {
         internalType: "enum IStakable.LockinPeriod",
         name: "_lockin",

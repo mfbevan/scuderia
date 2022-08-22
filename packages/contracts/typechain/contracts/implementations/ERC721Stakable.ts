@@ -27,12 +27,25 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
+export declare namespace IStakable {
+  export type StakedTokenStruct = {
+    timeStaked: PromiseOrValue<BigNumberish>;
+    lockinPeriod: PromiseOrValue<BigNumberish>;
+  };
+
+  export type StakedTokenStructOutput = [BigNumber, BigNumber] & {
+    timeStaked: BigNumber;
+    lockinPeriod: BigNumber;
+  };
+}
+
 export interface ERC721StakableInterface extends utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burn(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getStakeStatus(uint256[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
@@ -55,6 +68,7 @@ export interface ERC721StakableInterface extends utils.Interface {
       | "balanceOf"
       | "burn"
       | "getApproved"
+      | "getStakeStatus"
       | "isApprovedForAll"
       | "name"
       | "ownerOf"
@@ -86,6 +100,10 @@ export interface ERC721StakableInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakeStatus",
+    values: [PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
@@ -156,6 +174,10 @@ export interface ERC721StakableInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakeStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -332,6 +354,11 @@ export interface ERC721Stakable extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<[IStakable.StakedTokenStructOutput[]]>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -430,6 +457,11 @@ export interface ERC721Stakable extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getStakeStatus(
+    _tokens: PromiseOrValue<BigNumberish>[],
+    overrides?: CallOverrides
+  ): Promise<IStakable.StakedTokenStructOutput[]>;
+
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
@@ -524,6 +556,11 @@ export interface ERC721Stakable extends BaseContract {
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<IStakable.StakedTokenStructOutput[]>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
@@ -692,6 +729,11 @@ export interface ERC721Stakable extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -783,6 +825,11 @@ export interface ERC721Stakable extends BaseContract {
 
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

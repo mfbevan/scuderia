@@ -16,6 +16,6 @@ interface IMint {
  * Get all token ids in a wallet
  */
 export const walletOf = async ({ signer, address }: IMint) => {
-  const [tokens] = await ScuderiaContract(signer).functions.walletOf(address);
+  const tokens = await ScuderiaContract(signer).walletOf(address);
   return tokens.map((_tkn: BigNumber) => _tkn.toNumber());
 };

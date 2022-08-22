@@ -1,3 +1,18 @@
+interface Stake {
+  /**
+   * Is this token staked
+   */
+  staked: boolean;
+  /**
+   * UTC time when initial stake was made
+   */
+  timeStaked: number;
+  /**
+   * Lockin period before stake can be released
+   */
+  lockinPeriod: number
+}
+
 export interface IScuderiaNFT {
   /**
    * ID of the token
@@ -31,4 +46,8 @@ export interface IScuderiaNFT {
    * The reliability of the vehicle (for racing)
    */
   reliability: number;
+  /**
+   * The staking status of the token
+   */
+  stakeStatus?: Stake
 }

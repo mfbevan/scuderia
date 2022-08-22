@@ -49,6 +49,15 @@ interface IStakable {
     function unstake(uint256[] memory _tokens) external;
 
     /**
+     * @notice get the staked status for tokens
+     * @param _tokens array of token ids to get stake status for
+     */
+    function getStakeStatus(uint256[] memory _tokens)
+        external
+        view
+        returns (StakedToken[] memory);
+
+    /**
      * @notice Burn a token to the zero address
      * @dev This transaction will revert if the token is currently staked
      * @param _tokenId the token to burn

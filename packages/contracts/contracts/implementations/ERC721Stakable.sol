@@ -41,6 +41,18 @@ contract ERC721Stakable is IStakable, ERC721A {
         emit Unstake(msg.sender, _tokens);
     }
 
+    function getStakeStatus(uint256[] memory _tokens)
+        external
+        view
+        returns (StakedToken[] memory)
+    {
+        StakedToken[] memory tokens = new StakedToken[](_tokens.length);
+        for (uint256 i = 0; i < _tokens.length; i++) {
+            tokens[i] = stakes[_tokens[i]];
+        }
+        return tokens;
+    }
+
     function burn(uint256 _tokenId) external {
         if (stakes[_tokenId].timeStaked != 0)
             revert CannotTransferStaked(_tokenId);

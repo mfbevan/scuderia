@@ -8,8 +8,11 @@ import {
   ModalBody,
   ModalFooter,
   Image,
+  HStack,
 } from "@chakra-ui/react";
 import { IScuderiaNFT } from "@scuderia/lib";
+import { useState } from "react";
+import { TokenAttribute } from "./TokenAttribute";
 
 const ScuderiaTokenModal = ({
   token,
@@ -20,6 +23,15 @@ const ScuderiaTokenModal = ({
   isOpen: boolean;
   onClose(): void;
 }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleStake = async () => {
+    setLoading(true);
+
+    setLoading(false);
+  }
+
+
   return (
     <>
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -27,19 +39,18 @@ const ScuderiaTokenModal = ({
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
-        <ModalContent textAlign="center" minW={{ base: 350, md: 550 }}>
+        <ModalContent textAlign="center" minW={350}>
           <ModalHeader>Scuderia NFT #{token.tokenId}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Image
               rounded={"lg"}
-              height={{ base: 300, md: 500 }}
-              width={{ base: 300, md: 500 }}
+              height={300}
+              width={300}
+              mx="auto"
               objectFit={"cover"}
               src={token.image}
               alt={token.name}
-              mx="auto"
-              px={3}
             />
           </ModalBody>
           <ModalFooter></ModalFooter>

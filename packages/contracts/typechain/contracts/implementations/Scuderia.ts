@@ -28,6 +28,18 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
+export declare namespace IStakable {
+  export type StakedTokenStruct = {
+    timeStaked: PromiseOrValue<BigNumberish>;
+    lockinPeriod: PromiseOrValue<BigNumberish>;
+  };
+
+  export type StakedTokenStructOutput = [BigNumber, BigNumber] & {
+    timeStaked: BigNumber;
+    lockinPeriod: BigNumber;
+  };
+}
+
 export interface ScuderiaInterface extends utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
@@ -35,6 +47,7 @@ export interface ScuderiaInterface extends utils.Interface {
     "burn(uint256)": FunctionFragment;
     "genesisSupply()": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getStakeStatus(uint256[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "metadataSeed(uint256)": FunctionFragment;
     "mint(uint256)": FunctionFragment;
@@ -69,6 +82,7 @@ export interface ScuderiaInterface extends utils.Interface {
       | "burn"
       | "genesisSupply"
       | "getApproved"
+      | "getStakeStatus"
       | "isApprovedForAll"
       | "metadataSeed"
       | "mint"
@@ -115,6 +129,10 @@ export interface ScuderiaInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakeStatus",
+    values: [PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
@@ -230,6 +248,10 @@ export interface ScuderiaInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakeStatus",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -448,6 +470,11 @@ export interface Scuderia extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<[IStakable.StakedTokenStructOutput[]]>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -592,6 +619,11 @@ export interface Scuderia extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getStakeStatus(
+    _tokens: PromiseOrValue<BigNumberish>[],
+    overrides?: CallOverrides
+  ): Promise<IStakable.StakedTokenStructOutput[]>;
+
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
@@ -732,6 +764,11 @@ export interface Scuderia extends BaseContract {
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<IStakable.StakedTokenStructOutput[]>;
 
     isApprovedForAll(
       owner: PromiseOrValue<string>,
@@ -951,6 +988,11 @@ export interface Scuderia extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -1088,6 +1130,11 @@ export interface Scuderia extends BaseContract {
 
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

@@ -8,13 +8,20 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { IScuderiaNFT } from "@scuderia/lib";
+import { useContext } from "react";
+import StakingContext from "../../../providers/context/StakingContext";
 import ScuderiaTokenModal from "../ScuderiaTokenModal";
 
 export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
+  const { select } = useContext(StakingContext);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSelect = () => select(token);
 
   return (
     <Box
+      onClick={handleSelect}
       p={6}
       maxW={"220px"}
       w={"full"}
@@ -24,7 +31,6 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
       pos={"relative"}
       zIndex={1}
       pt="60px"
-      onClick={onOpen}
     >
       <Box
         rounded={"lg"}
@@ -45,6 +51,7 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
         }}
       >
         <Image
+          onClick={onOpen}
           rounded={"lg"}
           height={180}
           width={180}
@@ -62,11 +69,7 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
         </Heading>
         <Stack direction={"row"} align={"center"}></Stack>
       </Stack>
-      <ScuderiaTokenModal
-        token={token}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
+      <ScuderiaTokenModal token={token} isOpen={isOpen} onClose={onClose} />
     </Box>
   );
 };

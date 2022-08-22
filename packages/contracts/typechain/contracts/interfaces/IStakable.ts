@@ -27,20 +27,37 @@ import type {
   PromiseOrValue,
 } from "../../common";
 
+export declare namespace IStakable {
+  export type StakedTokenStruct = {
+    timeStaked: PromiseOrValue<BigNumberish>;
+    lockinPeriod: PromiseOrValue<BigNumberish>;
+  };
+
+  export type StakedTokenStructOutput = [BigNumber, BigNumber] & {
+    timeStaked: BigNumber;
+    lockinPeriod: BigNumber;
+  };
+}
+
 export interface IStakableInterface extends utils.Interface {
   functions: {
     "burn(uint256)": FunctionFragment;
+    "getStakeStatus(uint256[])": FunctionFragment;
     "stake(uint256[],uint8)": FunctionFragment;
     "unstake(uint256[])": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "burn" | "stake" | "unstake"
+    nameOrSignatureOrTopic: "burn" | "getStakeStatus" | "stake" | "unstake"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "burn",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getStakeStatus",
+    values: [PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
@@ -52,6 +69,10 @@ export interface IStakableInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getStakeStatus",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "unstake", data: BytesLike): Result;
 
@@ -119,6 +140,11 @@ export interface IStakable extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<[IStakable.StakedTokenStructOutput[]]>;
+
     stake(
       _tokens: PromiseOrValue<BigNumberish>[],
       _lockin: PromiseOrValue<BigNumberish>,
@@ -136,6 +162,11 @@ export interface IStakable extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  getStakeStatus(
+    _tokens: PromiseOrValue<BigNumberish>[],
+    overrides?: CallOverrides
+  ): Promise<IStakable.StakedTokenStructOutput[]>;
+
   stake(
     _tokens: PromiseOrValue<BigNumberish>[],
     _lockin: PromiseOrValue<BigNumberish>,
@@ -152,6 +183,11 @@ export interface IStakable extends BaseContract {
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<IStakable.StakedTokenStructOutput[]>;
 
     stake(
       _tokens: PromiseOrValue<BigNumberish>[],
@@ -193,6 +229,11 @@ export interface IStakable extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     stake(
       _tokens: PromiseOrValue<BigNumberish>[],
       _lockin: PromiseOrValue<BigNumberish>,
@@ -209,6 +250,11 @@ export interface IStakable extends BaseContract {
     burn(
       _tokenId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getStakeStatus(
+      _tokens: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     stake(
