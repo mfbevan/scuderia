@@ -29,7 +29,7 @@ const defaultContext: WalletContextProps = {
   signer: undefined,
   connected: false,
   scuderia: [],
-  loadingScuderia: false,
+  loadingScuderia: true,
   fetchData: async () => {},
 };
 
