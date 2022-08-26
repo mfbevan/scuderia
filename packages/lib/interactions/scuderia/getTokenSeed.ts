@@ -5,7 +5,7 @@ interface IGetTokenSeed {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Id of token to get metadata for
    */

@@ -1,13 +1,13 @@
 import { Signer } from "ethers";
 import { ScuderiaContract } from "@scuderia/contracts/deployments";
 import { IScuderiaNFT } from "../../types";
-import { StakingLockinOption } from "@scuderia/lib/constants";
+import { StakingLockinOption } from "../../constants";
 
 interface IStakeScuderia {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Tokens to stake
    */

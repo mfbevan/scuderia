@@ -29,7 +29,7 @@ interface StakingContextProps {
   /**
    * Set the current staking lockin period
    */
-  setStakeLockin(lockin: StakingLockinOption): void;
+  setStakeLockin(lockin: number): void;
 }
 
 const defaultContext: StakingContextProps = {

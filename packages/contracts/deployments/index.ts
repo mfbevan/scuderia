@@ -21,13 +21,13 @@ const getContracts: Record<Network, NetworkContracts> = {
   [Network.Localhost]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
 };
 
-export const ScuderiaContract = (signer: Signer) => {
+export const ScuderiaContract = (signer?: Signer) => {
   const { scuderia } = getContracts[network];
   const { address, abi } = scuderia;
   return new Contract(address, abi, signer) as Scuderia;
 };
 
-export const ScootContract = (signer: Signer) => {
+export const ScootContract = (signer?: Signer) => {
   const { scoot } = getContracts[network];
   const { address, abi } = scoot;
   return new Contract(address, abi, signer) as Scoot;

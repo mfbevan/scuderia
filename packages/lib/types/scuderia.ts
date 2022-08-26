@@ -1,4 +1,4 @@
-interface Stake {
+export interface Stake {
   /**
    * Is this token staked
    */

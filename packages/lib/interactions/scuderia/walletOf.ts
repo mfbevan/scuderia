@@ -5,7 +5,7 @@ interface IMint {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Wallet address to get token ids for
    */

@@ -7,13 +7,14 @@ interface IGetScuderiaTokens {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
 }
 
 /**
  * Get all Scuderia tokens and their data for the signer wallet
  */
 export const getScuderiaTokens = async ({ signer }: IGetScuderiaTokens) => {
+  if (!signer) return [];
   try {
     const tokenIds = await walletOf({
       signer,

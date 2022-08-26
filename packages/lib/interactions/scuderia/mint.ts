@@ -8,7 +8,7 @@ interface IMint {
   /**
    * Wallet to sign transaction and mint NFTs to
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Number of NFTs to mint
    */

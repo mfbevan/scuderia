@@ -6,7 +6,7 @@ interface IUnstakeScuderia {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Tokens to unstake
    */
@@ -21,6 +21,6 @@ export const unstake = async ({
   tokens,
 }: IUnstakeScuderia) => {
   const ids = tokens.map((_tkn) => _tkn.tokenId);
-  const stake = await ScuderiaContract(signer).unstake(ids);
-  await stake.wait();
+  const unstake = await ScuderiaContract(signer).unstake(ids);
+  await unstake.wait();
 };

@@ -6,7 +6,7 @@ interface IGetTokenData {
   /**
    * Wallet to sign transaction
    */
-  signer: Signer;
+  signer?: Signer;
   /**
    * Id of token to get metadata for
    */

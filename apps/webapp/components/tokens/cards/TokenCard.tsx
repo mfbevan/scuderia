@@ -10,15 +10,19 @@ import {
 import { IScuderiaNFT } from "@scuderia/lib";
 import { useContext } from "react";
 import StakingContext from "../../../providers/context/StakingContext";
+import { StakedIcon, UnstakedIcon } from "../../icons/StakeIcons";
 import ScuderiaTokenModal from "../ScuderiaTokenModal";
 
 export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
+  const {stakeStatus} = token;
   const { select, selected } = useContext(StakingContext);
   const isSelected = selected.includes(token);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleSelect = () => select(token);
+
+  const stakeColor = stakeStatus?.staked ? "red.500" : "gray.900";
 
   return (
     <Box
@@ -47,7 +51,7 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
           top: 5,
           left: 0,
           backgroundImage: `url(${token.image})`,
-          filter: "blur(15px)",
+          filter: "blur(5px)",
           zIndex: -1,
         }}
       >
@@ -61,13 +65,13 @@ export const TokenCard = ({ token }: { token: IScuderiaNFT }) => {
           alt={token.name}
         />
       </Box>
-      <Stack pt={5} align={"center"}>
-        <Text color={"gray.500"} fontSize={"sm"} textTransform={"uppercase"}>
-          Scuderia NFT
+      <Stack pt={8} align={"center"} color={stakeColor} spacing={2}>
+        <Text fontSize={"sm"} textTransform={"uppercase"} fontWeight={500}>
+          Scuderia NFT #{token.tokenId}
         </Text>
-        <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-          #{token.tokenId}
-        </Heading>
+        {
+          stakeStatus?.staked ? <StakedIcon stake={stakeStatus} /> : <UnstakedIcon />
+        }
         <Stack direction={"row"} align={"center"}></Stack>
       </Stack>
       <ScuderiaTokenModal token={token} isOpen={isOpen} onClose={onClose} />

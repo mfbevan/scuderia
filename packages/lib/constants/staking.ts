@@ -11,7 +11,7 @@ export enum StakingLockin {
  * The option passed to the staking contract to select the appropriate staking period
  */
 export enum StakingLockinOption {
-  STAKE_30_DAYS,
-  STAKE_60_DAYS,
-  STAKE_90_DAYS
+  STAKE_30_DAYS = 0,
+  STAKE_60_DAYS = 1,
+  STAKE_90_DAYS = 2,
 }

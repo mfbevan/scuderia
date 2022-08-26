@@ -1,39 +1,26 @@
-import {
-  Box,
-  Button,
-  Heading,
-  HStack,
-  Spacer,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { useContext } from "react";
+import { Select } from "@chakra-ui/react";
+import { ChangeEvent, useContext } from "react";
 import StakingContext from "../../providers/context/StakingContext";
+import { StakingLockinOption } from "@scuderia/lib/constants";
 
 export const StakePeriodDropdown = () => {
-  const { selected, loading } = useContext(StakingContext);
+  const { lockinPeriod, setStakeLockin } = useContext(StakingContext);
+
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setStakeLockin(parseInt(event.target.value));
+  };
+
   return (
-    <Box
-      p={2}
-      minW={400}
-      w={"60%"}
-      bg={useColorModeValue("white", "gray.800")}
-      boxShadow={"lg"}
-      rounded={"lg"}
-      pos={"relative"}
-      zIndex={1}
+    <Select
+      w={180}
+      placeholder="Staking Period"
+      variant="outline"
+      onChange={handleChange}
+      defaultValue={StakingLockinOption.STAKE_30_DAYS}
     >
-      <HStack>
-        <Heading size="sm" pl={4}>
-          {selected.length} tokens selected
-        </Heading>
-        <Spacer />
-        <Button isLoading={loading} minW={100} colorScheme="red">
-          Stake
-        </Button>
-        <Button isLoading={loading} minW={100} colorScheme="red">
-          Unstake
-        </Button>
-      </HStack>
-    </Box>
+      <option value={StakingLockinOption.STAKE_30_DAYS}>30 Days</option>
+      <option value={StakingLockinOption.STAKE_60_DAYS}>60 Days</option>
+      <option value={StakingLockinOption.STAKE_90_DAYS}>90 Days</option>
+    </Select>
   );
 };

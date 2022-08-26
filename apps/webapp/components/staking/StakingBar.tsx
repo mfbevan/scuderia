@@ -9,33 +9,40 @@ import {
 import { Wallet } from "ethers";
 import { useContext } from "react";
 import StakingContext from "../../providers/context/StakingContext";
+import { StakePeriodDropdown } from "./StakingPeriodDropdown";
 
 export const StakingBar = () => {
   const { selected, loading, stake, unstake } = useContext(StakingContext);
 
-  const wallet = new Wallet("2a6ba9ca1dbcc17a208cc25022ef68971817365d16a7d8f1f89cab2962663c5e");
-  console.log(wallet.address);
-
   return (
     <Box
       p={2}
-      minW={400}
-      w={"60%"}
       bg={useColorModeValue("white", "gray.800")}
       boxShadow={"lg"}
       rounded={"lg"}
       pos={"relative"}
       zIndex={1}
     >
-      <HStack>
-        <Heading size="sm" pl={4}>
+      <HStack w={600}>
+        <Heading size="sm" pl={4} minW={200}>
           {selected.length} tokens selected
         </Heading>
+        <StakePeriodDropdown />
         <Spacer />
-        <Button isLoading={loading} minW={100} colorScheme="red">
+        <Button
+          isLoading={loading}
+          minW={100}
+          colorScheme="red"
+          onClick={stake}
+        >
           Stake
         </Button>
-        <Button isLoading={loading} minW={100} colorScheme="red">
+        <Button
+          isLoading={loading}
+          minW={100}
+          colorScheme="red"
+          onClick={unstake}
+        >
           Unstake
         </Button>
       </HStack>
