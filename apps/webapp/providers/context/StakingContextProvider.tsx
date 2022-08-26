@@ -7,6 +7,7 @@ import { walletOf, getTokenData, getScuderiaTokens } from "@scuderia/lib";
 import { useToast } from "@chakra-ui/react";
 import { failureToast } from "../../constants";
 import StakingContext from "./StakingContext";
+import { StakingLockinOption } from "@scuderia/lib/constants";
 
 const StakingContextProvider = ({ children }: { children: ReactNode }) => {
   const toast = useToast();
@@ -22,6 +23,12 @@ const StakingContextProvider = ({ children }: { children: ReactNode }) => {
 
     console.log("after", selected);
   };
+
+  const [lockinPeriod, setLockinPeriod] = useState<StakingLockinOption>(
+    StakingLockinOption.STAKE_30_DAYS
+  );
+  const setStakeLockin = (lockin: StakingLockinOption) =>
+    setLockinPeriod(lockin);
 
   const [loading, setLoading] = useState(false);
 
@@ -41,6 +48,8 @@ const StakingContextProvider = ({ children }: { children: ReactNode }) => {
         stake,
         unstake,
         loading,
+        lockinPeriod,
+        setStakeLockin,
       }}
     >
       {children}

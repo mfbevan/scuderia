@@ -6,16 +6,11 @@ import {
   Spacer,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Wallet } from "ethers";
 import { useContext } from "react";
 import StakingContext from "../../providers/context/StakingContext";
 
-export const StakingBar = () => {
-  const { selected, loading, stake, unstake } = useContext(StakingContext);
-
-  const wallet = new Wallet("2a6ba9ca1dbcc17a208cc25022ef68971817365d16a7d8f1f89cab2962663c5e");
-  console.log(wallet.address);
-
+export const StakePeriodDropdown = () => {
+  const { selected, loading } = useContext(StakingContext);
   return (
     <Box
       p={2}

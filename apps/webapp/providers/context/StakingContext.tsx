@@ -1,4 +1,4 @@
-import { IScuderiaNFT } from "@scuderia/lib";
+import { IScuderiaNFT, StakingLockinOption } from "@scuderia/lib";
 import { createContext } from "react";
 
 interface StakingContextProps {
@@ -15,6 +15,10 @@ interface StakingContextProps {
    */
   loading: boolean;
   /**
+   * The currently selected staking lockin period
+   */
+  lockinPeriod: StakingLockinOption;
+  /**
    * Handle staking transaction for currently selected tokens
    */
   stake(): Promise<void>;
@@ -22,14 +26,20 @@ interface StakingContextProps {
    * Handle unstaking transaction for currently selected tokens
    */
   unstake(): Promise<void>;
+  /**
+   * Set the current staking lockin period
+   */
+  setStakeLockin(lockin: StakingLockinOption): void;
 }
 
 const defaultContext: StakingContextProps = {
   select: () => {},
   stake: async () => {},
   unstake: async () => {},
+  setStakeLockin: () => {},
   selected: [],
   loading: false,
+  lockinPeriod: StakingLockinOption.STAKE_30_DAYS,
 };
 
 const StakingContext = createContext<StakingContextProps>(defaultContext);
