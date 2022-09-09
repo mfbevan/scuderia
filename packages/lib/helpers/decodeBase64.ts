@@ -19,4 +19,4 @@ export const decodeBase64 = (tokenURI: string): IScuderiaNFT => {
     reliability: parseInt(reliability),
     ...data
   }
-}
+}  

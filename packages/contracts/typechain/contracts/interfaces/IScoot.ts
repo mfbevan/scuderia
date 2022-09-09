@@ -25,51 +25,54 @@ import type {
 
 export interface IScootInterface extends utils.Interface {
   functions: {
-    "burnToken(uint256)": FunctionFragment;
+    "burnToken(address,uint256)": FunctionFragment;
     "claimToken()": FunctionFragment;
-    "getBalance(address)": FunctionFragment;
-    "getUnclaimedBalance(address)": FunctionFragment;
     "grantToken(address,uint256)": FunctionFragment;
+    "unclaimedBalanceOf(address)": FunctionFragment;
+    "updateReward(address,address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "burnToken"
       | "claimToken"
-      | "getBalance"
-      | "getUnclaimedBalance"
       | "grantToken"
+      | "unclaimedBalanceOf"
+      | "updateReward"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "burnToken",
-    values: [PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "claimToken",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getBalance",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getUnclaimedBalance",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "grantToken",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "unclaimedBalanceOf",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateReward",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(functionFragment: "burnToken", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claimToken", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "grantToken", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getUnclaimedBalance",
+    functionFragment: "unclaimedBalanceOf",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "grantToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "updateReward",
+    data: BytesLike
+  ): Result;
 
   events: {};
 }
@@ -102,6 +105,7 @@ export interface IScoot extends BaseContract {
 
   functions: {
     burnToken(
+      _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -110,24 +114,26 @@ export interface IScoot extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
-    getUnclaimedBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[void]>;
-
     grantToken(
       _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    unclaimedBalanceOf(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    updateReward(
+      _sender: PromiseOrValue<string>,
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   burnToken(
+    _recipient: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -136,43 +142,46 @@ export interface IScoot extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getBalance(
-    _account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
-  getUnclaimedBalance(
-    _account: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<void>;
-
   grantToken(
     _recipient: PromiseOrValue<string>,
     _amount: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  unclaimedBalanceOf(
+    _account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  updateReward(
+    _sender: PromiseOrValue<string>,
+    _receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     burnToken(
+      _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     claimToken(overrides?: CallOverrides): Promise<void>;
 
-    getBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    getUnclaimedBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     grantToken(
       _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    unclaimedBalanceOf(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    updateReward(
+      _sender: PromiseOrValue<string>,
+      _receiver: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -181,6 +190,7 @@ export interface IScoot extends BaseContract {
 
   estimateGas: {
     burnToken(
+      _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -189,25 +199,27 @@ export interface IScoot extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getUnclaimedBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     grantToken(
       _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    unclaimedBalanceOf(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    updateReward(
+      _sender: PromiseOrValue<string>,
+      _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     burnToken(
+      _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -216,19 +228,20 @@ export interface IScoot extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getUnclaimedBalance(
-      _account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     grantToken(
       _recipient: PromiseOrValue<string>,
       _amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unclaimedBalanceOf(
+      _account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    updateReward(
+      _sender: PromiseOrValue<string>,
+      _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

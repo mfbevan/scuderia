@@ -11,7 +11,22 @@ import type {
 
 const _abi = [
   {
+    inputs: [],
+    name: "ClaimingZeroReward",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "InvalidRoleForAction",
+    type: "error",
+  },
+  {
     inputs: [
+      {
+        internalType: "address",
+        name: "_recipient",
+        type: "address",
+      },
       {
         internalType: "uint256",
         name: "_amount",
@@ -34,32 +49,6 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "_account",
-        type: "address",
-      },
-    ],
-    name: "getBalance",
-    outputs: [],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_account",
-        type: "address",
-      },
-    ],
-    name: "getUnclaimedBalance",
-    outputs: [],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "_recipient",
         type: "address",
       },
@@ -70,6 +59,43 @@ const _abi = [
       },
     ],
     name: "grantToken",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_account",
+        type: "address",
+      },
+    ],
+    name: "unclaimedBalanceOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_sender",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_receiver",
+        type: "address",
+      },
+    ],
+    name: "updateReward",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -1,6 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { parseEther } from "ethers/lib/utils";
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { ethers, deployments } = hre;
@@ -12,8 +11,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer.address,
     log: true,
     contract: "Scoot",
-    args: [parseEther("1000000000"), []],
+    args: [deployer.address],
   });
 };
 export default func;
-func.tags = ["testbed", "_scoot"];
+func.tags = ["testbed", "_scuderia"];
