@@ -123,10 +123,8 @@ describe("Scuderia Racing ERC721 Minting", () => {
       });
       it("should increase total supply", async () => {
         expect(await Scuderia.totalSupply()).to.eq(0);
-        expect(await Scuderia.genesisSupply()).to.eq(0);
         await Scuderia.connect(alice).mint(numToMint, { value: mintCost });
         expect(await Scuderia.totalSupply()).to.eq(numToMint);
-        expect(await Scuderia.genesisSupply()).to.eq(numToMint);
       });
       it("should randomise different metadata for each mint", async () => {
         await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
@@ -150,16 +148,6 @@ describe("Scuderia Racing ERC721 Minting", () => {
       it("should return empty array if the wallet has no tokens", async () => {
         expect(await Scuderia.connect(alice).walletOf(bob.address)).to.eql([]);
       });
-    });
-  });
-
-  describe("Secondary minting", () => {
-    beforeEach(async () => {
-      await Scuderia.toggleSale();
-    });
-
-    it("should mint a new token", async () => {
-      await Scuderia.connect(alice).secondaryMint(1);
     });
   });
 });

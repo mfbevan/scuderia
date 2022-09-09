@@ -37,18 +37,23 @@ contract Scoot is IScoot, ERC20, AccessControl {
         _burn(_recipient, _amount);
     }
 
-    function claimToken() external {
-        uint256 claimable = unclaimedBalanceOf(msg.sender);
-        if (claimable == 0) revert ClaimingZeroReward();
-        _mint(msg.sender, claimable);
-    }
-
     function unclaimedBalanceOf(address _account)
         external
         view
         returns (uint256)
     {
         return calculateAccumulatedReward(_account) + pendingReward[_account];
+    }
+
+    function claimToken() external {
+        uint256 reward = calculateAccumulatedReward(msg.sender) +
+            pendingReward[msg.sender];
+        if (reward == 0) revert ClaimingZeroReward();
+
+        pendingReward[msg.sender] = 0;
+        lastClaimedTime[msg.sender] = block.timestamp;
+
+        _mint(msg.sender, reward);
     }
 
     /**

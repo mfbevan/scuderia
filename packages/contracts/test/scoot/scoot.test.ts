@@ -9,10 +9,9 @@ import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 use(chaiAsPromised);
 
-const { deploy } = deployments;
 const MINT_PRICE = parseEther("0.1");
 
-describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
+describe("Scuderia Racing ERC20 Scoot SCT", () => {
   let deployer: SignerWithAddress,
     alice: SignerWithAddress,
     bob: SignerWithAddress;
@@ -69,10 +68,30 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
 
   describe("claimToken", () => {
     it("should mint pending reward to caller", async () => {
-      // ...
+      await time.increase(86400);
+
+      const initial = await Scoot.balanceOf(alice.address);
+      await Scoot.connect(alice).claimToken();
+      const final = await Scoot.balanceOf(alice.address);
+
+      const reward = parseFloat(formatEther(await Scoot.DAILY_REWARD()));
+
+      expect(parseFloat(formatEther(final))).to.be.closeTo(
+        parseFloat(formatEther(initial)) + reward,
+        3
+      );
     });
     it("should revert if claiming zero reward", async () => {
-      // ...
+      await expect(
+        Scoot.connect(bob).claimToken()
+      ).to.be.revertedWithCustomError(Scoot, "ClaimingZeroReward");
+    });
+    it("should reset the unclaimed balance", async () => {
+      await time.increase(86400);
+      await Scoot.connect(alice).claimToken();
+
+      const after = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(after))).to.be.closeTo(0, 3);
     });
   });
 
@@ -81,7 +100,7 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
       expect(await Scoot.unclaimedBalanceOf(bob.address)).to.eq(0);
     });
     it("should return unclaimed balance for 1 day", async () => {
-      const reward = parseInt(formatEther(await Scoot.DAILY_REWARD()));
+      const reward = parseFloat(formatEther(await Scoot.DAILY_REWARD()));
       const initial = await Scoot.unclaimedBalanceOf(alice.address);
       expect(parseFloat(formatEther(initial))).to.be.closeTo(0, 3);
 
@@ -91,7 +110,7 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
       expect(parseInt(formatEther(unclaimed))).to.be.closeTo(reward, 3);
     });
     it("should return unclaimed balance for 5 day", async () => {
-      const reward = 5 * parseInt(formatEther(await Scoot.DAILY_REWARD()));
+      const reward = 5 * parseFloat(formatEther(await Scoot.DAILY_REWARD()));
       const initial = await Scoot.unclaimedBalanceOf(alice.address);
       expect(parseFloat(formatEther(initial))).to.be.closeTo(0, 3);
 
@@ -99,6 +118,30 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
 
       const unclaimed = await Scoot.unclaimedBalanceOf(alice.address);
       expect(parseFloat(formatEther(unclaimed))).to.be.closeTo(reward, 3);
+    });
+  });
+
+  describe("updateReward", () => {
+    it("should store the reward amount after transfer", async () => {
+      // Alice holds the token for a day, then sends it to bob who holds it for a day and checks balance
+      const reward = parseFloat(formatEther(await Scoot.DAILY_REWARD()));
+
+      await time.increase(86400);
+
+      await Scuderia.connect(alice)["safeTransferFrom(address,address,uint256)"](
+        alice.address,
+        bob.address,
+        1
+      );
+
+      const unclaimedAlice = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(unclaimedAlice))).to.be.closeTo(reward, 3);
+
+      await time.increase(86400);
+
+      const unclaimedBob = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(unclaimedAlice))).to.be.closeTo(reward, 3);
+      expect(parseFloat(formatEther(unclaimedBob))).to.be.closeTo(reward, 3);
     });
   });
 });

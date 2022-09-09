@@ -191,4 +191,26 @@ describe("Scuderia Racing ERC721 Staking", () => {
       ).to.be.revertedWithCustomError(Scuderia, "CannotTransferStaked");
     });
   });
+
+  describe("getStakeStatus", () => {
+    it("should return array of Stake Status for tokens", async () => {
+      await Scuderia.toggleSale();
+      await Scuderia.connect(alice).mint(2, { value: MINT_PRICE.mul(2) });
+      await Scuderia.connect(alice).stake(
+        [1, 2],
+        StakingLockinOption.STAKE_30_DAYS
+      );
+      
+      const status = await Scuderia.connect(alice).getStakeStatus([1, 2]);
+
+      expect(status[0].timeStaked.toNumber()).to.eq(await getBlockTimestamp());
+      expect(status[0].lockinPeriod.toNumber()).to.eq(
+        Number(StakingLockin.STAKE_30_DAYS)
+      );
+      expect(status[1].timeStaked.toNumber()).to.eq(await getBlockTimestamp());
+      expect(status[1].lockinPeriod.toNumber()).to.eq(
+        Number(StakingLockin.STAKE_30_DAYS)
+      );
+    });
+  });
 });
