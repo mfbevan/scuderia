@@ -25,6 +25,12 @@ interface IScoot {
      */
     function updateReward(address _sender, address _receiver) external;
 
+     /**
+     * @notice Update the currently stored award for just a receiver (e.g on mint)
+     * @dev Note this does not claim the balance, it just updates the unclaimed reward amount
+     */
+    function updateReward(address _receiver) external;
+
     /**
      * @notice Get the unclaimed/claimable balance of an account
      * @param _account the account to check the unclaimed balance for

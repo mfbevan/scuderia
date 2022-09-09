@@ -29,6 +29,7 @@ export interface IScootInterface extends utils.Interface {
     "claimToken()": FunctionFragment;
     "grantToken(address,uint256)": FunctionFragment;
     "unclaimedBalanceOf(address)": FunctionFragment;
+    "updateReward(address)": FunctionFragment;
     "updateReward(address,address)": FunctionFragment;
   };
 
@@ -38,7 +39,8 @@ export interface IScootInterface extends utils.Interface {
       | "claimToken"
       | "grantToken"
       | "unclaimedBalanceOf"
-      | "updateReward"
+      | "updateReward(address)"
+      | "updateReward(address,address)"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -58,7 +60,11 @@ export interface IScootInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateReward",
+    functionFragment: "updateReward(address)",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateReward(address,address)",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
 
@@ -70,7 +76,11 @@ export interface IScootInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateReward",
+    functionFragment: "updateReward(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateReward(address,address)",
     data: BytesLike
   ): Result;
 
@@ -125,7 +135,12 @@ export interface IScoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -153,7 +168,12 @@ export interface IScoot extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  updateReward(
+  "updateReward(address)"(
+    _receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "updateReward(address,address)"(
     _sender: PromiseOrValue<string>,
     _receiver: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -179,7 +199,12 @@ export interface IScoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -210,7 +235,12 @@ export interface IScoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -239,7 +269,12 @@ export interface IScoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }

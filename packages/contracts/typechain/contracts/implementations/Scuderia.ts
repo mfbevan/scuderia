@@ -61,6 +61,7 @@ export interface ScuderiaInterface extends utils.Interface {
     "secondaryMint(uint256)": FunctionFragment;
     "secondarySupply()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setScootContract(address)": FunctionFragment;
     "stake(uint256[],uint8)": FunctionFragment;
     "stakes(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -96,6 +97,7 @@ export interface ScuderiaInterface extends utils.Interface {
       | "secondaryMint"
       | "secondarySupply"
       | "setApprovalForAll"
+      | "setScootContract"
       | "stake"
       | "stakes"
       | "supportsInterface"
@@ -188,6 +190,10 @@ export interface ScuderiaInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setScootContract",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "stake",
@@ -289,6 +295,10 @@ export interface ScuderiaInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setApprovalForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setScootContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "stake", data: BytesLike): Result;
@@ -534,6 +544,11 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setScootContract(
+      _address: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     stake(
       _tokens: PromiseOrValue<BigNumberish>[],
       _lockin: PromiseOrValue<BigNumberish>,
@@ -683,6 +698,11 @@ export interface Scuderia extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setScootContract(
+    _address: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   stake(
     _tokens: PromiseOrValue<BigNumberish>[],
     _lockin: PromiseOrValue<BigNumberish>,
@@ -824,6 +844,11 @@ export interface Scuderia extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setScootContract(
+      _address: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1052,6 +1077,11 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setScootContract(
+      _address: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     stake(
       _tokens: PromiseOrValue<BigNumberish>[],
       _lockin: PromiseOrValue<BigNumberish>,
@@ -1194,6 +1224,11 @@ export interface Scuderia extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setScootContract(
+      _address: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

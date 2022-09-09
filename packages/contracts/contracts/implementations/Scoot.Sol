@@ -2,23 +2,29 @@
 pragma solidity 0.8.16;
 
 import "../interfaces/IScoot.sol";
+import "./Scuderia.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+
+import "erc721a/contracts/ERC721A.sol";
 
 contract Scoot is IScoot, ERC20, AccessControl {
     bytes32 public constant GRANTER_ROLE = keccak256("GRANTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    uint256 constant DAILY_REWARD = 10 ether;
+    uint256 public constant DAILY_REWARD = 10 ether;
 
     // tokenid => time tokens were last claimed to pending amount (i.e on transfer)
     mapping(address => uint256) lastClaimedTime;
     // Pending reward to be claimed (not including accumulated)
     mapping(address => uint256) pendingReward;
 
-    constructor(address _admin) ERC20("Scoot", "SCT") {
+    Scuderia immutable scuderia;
+
+    constructor(address _admin, Scuderia _scuderia) ERC20("Scoot", "SCT") {
         _setupRole(DEFAULT_ADMIN_ROLE, _admin);
+        scuderia = _scuderia;
     }
 
     function grantToken(address _recipient, uint256 _amount) external {
@@ -32,9 +38,9 @@ contract Scoot is IScoot, ERC20, AccessControl {
     }
 
     function claimToken() external {
-        // uint256 claimable = unclaimedBalanceOf(msg.sender);
-        // if (claimable == 0) revert ClaimingZeroReward();
-        // _mint(msg.sender, claimable);
+        uint256 claimable = unclaimedBalanceOf(msg.sender);
+        if (claimable == 0) revert ClaimingZeroReward();
+        _mint(msg.sender, claimable);
     }
 
     function unclaimedBalanceOf(address _account)
@@ -45,16 +51,36 @@ contract Scoot is IScoot, ERC20, AccessControl {
         return calculateAccumulatedReward(_account) + pendingReward[_account];
     }
 
+    /**
+     * @notice Calculate accumulated reward since last time updateReward was called
+     */
     function calculateAccumulatedReward(address _account)
         internal
         view
         returns (uint256)
     {
-        return 100;
+        if (lastClaimedTime[_account] == 0) return 0;
+        return
+            (scuderia.balanceOf(_account) *
+                DAILY_REWARD *
+                (block.timestamp - lastClaimedTime[_account])) / 1 days;
     }
 
     function updateReward(address _sender, address _receiver) external {
-        // ...
+        pendingReward[_sender] =
+            pendingReward[_sender] +
+            calculateAccumulatedReward(_sender);
+        pendingReward[_receiver] =
+            pendingReward[_receiver] +
+            calculateAccumulatedReward(_receiver);
+        lastClaimedTime[_sender] = block.timestamp;
+        lastClaimedTime[_receiver] = block.timestamp;
     }
 
+    function updateReward(address _receiver) external {
+        pendingReward[_receiver] =
+            pendingReward[_receiver] +
+            calculateAccumulatedReward(_receiver);
+        lastClaimedTime[_receiver] = block.timestamp;
+    }
 }

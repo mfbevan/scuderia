@@ -7,12 +7,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const [deployer] = await ethers.getSigners();
 
-  await deploy("Scoot", {
+  const Scuderia = await ethers.getContract("Scuderia");
+
+  const Scoot = await deploy("Scoot", {
     from: deployer.address,
     log: true,
     contract: "Scoot",
-    args: [deployer.address],
+    args: [deployer.address, Scuderia.address],
   });
+
+  await Scuderia.setScootContract(Scoot.address);
 };
 export default func;
 func.tags = ["testbed", "_scuderia"];

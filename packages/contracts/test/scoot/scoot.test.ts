@@ -3,8 +3,9 @@ import { expect, use } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber, constants } from "ethers";
-import { parseEther } from "ethers/lib/utils";
+import { formatEther, parseEther } from "ethers/lib/utils";
 import { Scoot, Scuderia } from "typechain";
+import { time } from "@nomicfoundation/hardhat-network-helpers";
 
 use(chaiAsPromised);
 
@@ -55,9 +56,9 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
       ).to.changeTokenBalance(Scoot, alice.address, parseEther("-100"));
     });
     it("should revert if burn balance exceed current balance", async () => {
-      await expect(
-        Scoot.burnToken(alice.address, AMOUNT)
-      ).to.be.revertedWith("ERC20: burn amount exceeds balance");
+      await expect(Scoot.burnToken(alice.address, AMOUNT)).to.be.revertedWith(
+        "ERC20: burn amount exceeds balance"
+      );
     });
     it("should revert if caller does not have BURNER_ROLE", async () => {
       await expect(
@@ -77,10 +78,27 @@ describe.only("Scuderia Racing ERC20 Scoot SCT", () => {
 
   describe("unclaimedBalanceOf", () => {
     it("should return zero if no balance owed", async () => {
-      // ...
+      expect(await Scoot.unclaimedBalanceOf(bob.address)).to.eq(0);
     });
-    it("should return unclaimed balance", async () => {
-      // ...
+    it("should return unclaimed balance for 1 day", async () => {
+      const reward = parseInt(formatEther(await Scoot.DAILY_REWARD()));
+      const initial = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(initial))).to.be.closeTo(0, 3);
+
+      await time.increase(86400);
+
+      const unclaimed = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseInt(formatEther(unclaimed))).to.be.closeTo(reward, 3);
+    });
+    it("should return unclaimed balance for 5 day", async () => {
+      const reward = 5 * parseInt(formatEther(await Scoot.DAILY_REWARD()));
+      const initial = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(initial))).to.be.closeTo(0, 3);
+
+      await time.increase(86400 * 5);
+
+      const unclaimed = await Scoot.unclaimedBalanceOf(alice.address);
+      expect(parseFloat(formatEther(unclaimed))).to.be.closeTo(reward, 3);
     });
   });
 });

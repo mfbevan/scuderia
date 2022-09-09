@@ -2,6 +2,7 @@
 pragma solidity 0.8.16;
 
 import "../interfaces/IScuderia.sol";
+import "./Scoot.sol";
 import "../libraries/ScuderiaMetadata.sol";
 import "./ERC721Stakable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -26,6 +27,8 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
 
     bool public saleActive = false;
 
+    Scoot ScootContract;
+
     constructor(address _ownerAddress) ERC721Stakable("Scuderia", "SCD") {
         require(_ownerAddress != address(0), "owner address cannot be 0x0");
         if (_ownerAddress != msg.sender) {
@@ -49,6 +52,7 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
             );
         }
         genesisSupply += _quantity;
+        ScootContract.updateReward(msg.sender);
 
         _safeMint(msg.sender, _quantity);
     }
@@ -115,5 +119,13 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
      */
     function withdraw(address _recipient) public onlyOwner {
         payable(_recipient).transfer(address(this).balance);
+    }
+
+    /**
+     * @notice Set the Scoot Token Contract
+     * @param _address Address of the contract
+     */
+    function setScootContract(Scoot _address) public onlyOwner {
+        ScootContract = _address;
     }
 }

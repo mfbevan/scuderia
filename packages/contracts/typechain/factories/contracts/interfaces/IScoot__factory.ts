@@ -86,6 +86,19 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
+        name: "_receiver",
+        type: "address",
+      },
+    ],
+    name: "updateReward",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
         name: "_sender",
         type: "address",
       },

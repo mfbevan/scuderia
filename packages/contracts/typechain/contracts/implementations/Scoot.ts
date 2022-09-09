@@ -30,6 +30,7 @@ import type {
 export interface ScootInterface extends utils.Interface {
   functions: {
     "BURNER_ROLE()": FunctionFragment;
+    "DAILY_REWARD()": FunctionFragment;
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "GRANTER_ROLE()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
@@ -53,12 +54,14 @@ export interface ScootInterface extends utils.Interface {
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "unclaimedBalanceOf(address)": FunctionFragment;
+    "updateReward(address)": FunctionFragment;
     "updateReward(address,address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "BURNER_ROLE"
+      | "DAILY_REWARD"
       | "DEFAULT_ADMIN_ROLE"
       | "GRANTER_ROLE"
       | "allowance"
@@ -82,11 +85,16 @@ export interface ScootInterface extends utils.Interface {
       | "transfer"
       | "transferFrom"
       | "unclaimedBalanceOf"
-      | "updateReward"
+      | "updateReward(address)"
+      | "updateReward(address,address)"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "BURNER_ROLE",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "DAILY_REWARD",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -177,12 +185,20 @@ export interface ScootInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
-    functionFragment: "updateReward",
+    functionFragment: "updateReward(address)",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "updateReward(address,address)",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
 
   decodeFunctionResult(
     functionFragment: "BURNER_ROLE",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "DAILY_REWARD",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -239,7 +255,11 @@ export interface ScootInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateReward",
+    functionFragment: "updateReward(address)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "updateReward(address,address)",
     data: BytesLike
   ): Result;
 
@@ -347,6 +367,8 @@ export interface Scoot extends BaseContract {
 
   functions: {
     BURNER_ROLE(overrides?: CallOverrides): Promise<[string]>;
+
+    DAILY_REWARD(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<[string]>;
 
@@ -457,7 +479,12 @@ export interface Scoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -465,6 +492,8 @@ export interface Scoot extends BaseContract {
   };
 
   BURNER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+  DAILY_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
   DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -575,7 +604,12 @@ export interface Scoot extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  updateReward(
+  "updateReward(address)"(
+    _receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  "updateReward(address,address)"(
     _sender: PromiseOrValue<string>,
     _receiver: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -583,6 +617,8 @@ export interface Scoot extends BaseContract {
 
   callStatic: {
     BURNER_ROLE(overrides?: CallOverrides): Promise<string>;
+
+    DAILY_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
@@ -691,7 +727,12 @@ export interface Scoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: CallOverrides
@@ -757,6 +798,8 @@ export interface Scoot extends BaseContract {
 
   estimateGas: {
     BURNER_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    DAILY_REWARD(overrides?: CallOverrides): Promise<BigNumber>;
 
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -867,7 +910,12 @@ export interface Scoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -876,6 +924,8 @@ export interface Scoot extends BaseContract {
 
   populateTransaction: {
     BURNER_ROLE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    DAILY_REWARD(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     DEFAULT_ADMIN_ROLE(
       overrides?: CallOverrides
@@ -988,7 +1038,12 @@ export interface Scoot extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    updateReward(
+    "updateReward(address)"(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    "updateReward(address,address)"(
       _sender: PromiseOrValue<string>,
       _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
