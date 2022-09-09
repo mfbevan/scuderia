@@ -8,7 +8,6 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
-  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -27,27 +26,16 @@ import type {
 export interface IScuderiaInterface extends utils.Interface {
   functions: {
     "mint(uint256)": FunctionFragment;
-    "secondaryMint(uint256)": FunctionFragment;
   };
 
-  getFunction(
-    nameOrSignatureOrTopic: "mint" | "secondaryMint"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "mint"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "mint",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
-  encodeFunctionData(
-    functionFragment: "secondaryMint",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
 
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "secondaryMint",
-    data: BytesLike
-  ): Result;
 
   events: {};
 }
@@ -83,11 +71,6 @@ export interface IScuderia extends BaseContract {
       _quantity: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   mint(
@@ -95,19 +78,9 @@ export interface IScuderia extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  secondaryMint(
-    _blueprintId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     mint(
       _quantity: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -119,22 +92,12 @@ export interface IScuderia extends BaseContract {
       _quantity: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     mint(
       _quantity: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

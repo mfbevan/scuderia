@@ -43,19 +43,6 @@ const _abi = [
     stateMutability: "payable",
     type: "function",
   },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_blueprintId",
-        type: "uint256",
-      },
-    ],
-    name: "secondaryMint",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
 ];
 
 export class IScuderia__factory {

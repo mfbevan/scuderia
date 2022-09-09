@@ -9,12 +9,6 @@ interface IScuderia {
     function mint(uint256 _quantity) external payable;
 
     /**
-     * @notice Create a second generation racing NFT using a genesis token as a blueprint. Cost $SCOOT token
-     * @param _blueprintId the tokenId of the vehicle to use as a blueprint to create a second generation token
-     */
-    function secondaryMint(uint256 _blueprintId) external;
-
-    /**
      * @notice flag to enable sale has not yet been made active
      */
     error SaleInactive();

@@ -45,7 +45,6 @@ export interface ScuderiaInterface extends utils.Interface {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burn(uint256)": FunctionFragment;
-    "genesisSupply()": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "getStakeStatus(uint256[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
@@ -58,8 +57,6 @@ export interface ScuderiaInterface extends utils.Interface {
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
     "saleActive()": FunctionFragment;
-    "secondaryMint(uint256)": FunctionFragment;
-    "secondarySupply()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setScootContract(address)": FunctionFragment;
     "stake(uint256[],uint8)": FunctionFragment;
@@ -81,7 +78,6 @@ export interface ScuderiaInterface extends utils.Interface {
       | "approve"
       | "balanceOf"
       | "burn"
-      | "genesisSupply"
       | "getApproved"
       | "getStakeStatus"
       | "isApprovedForAll"
@@ -94,8 +90,6 @@ export interface ScuderiaInterface extends utils.Interface {
       | "safeTransferFrom(address,address,uint256)"
       | "safeTransferFrom(address,address,uint256,bytes)"
       | "saleActive"
-      | "secondaryMint"
-      | "secondarySupply"
       | "setApprovalForAll"
       | "setScootContract"
       | "stake"
@@ -123,10 +117,6 @@ export interface ScuderiaInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "burn",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "genesisSupply",
-    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
@@ -177,14 +167,6 @@ export interface ScuderiaInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "saleActive",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "secondaryMint",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "secondarySupply",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -249,10 +231,6 @@ export interface ScuderiaInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "genesisSupply",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
@@ -285,14 +263,6 @@ export interface ScuderiaInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "saleActive", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "secondaryMint",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "secondarySupply",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "setApprovalForAll",
     data: BytesLike
@@ -473,8 +443,6 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    genesisSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
-
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -525,18 +493,11 @@ export interface Scuderia extends BaseContract {
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     saleActive(overrides?: CallOverrides): Promise<[boolean]>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
-    secondarySupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     setApprovalForAll(
       operator: PromiseOrValue<string>,
@@ -627,8 +588,6 @@ export interface Scuderia extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  genesisSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
   getApproved(
     tokenId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -679,18 +638,11 @@ export interface Scuderia extends BaseContract {
     from: PromiseOrValue<string>,
     to: PromiseOrValue<string>,
     tokenId: PromiseOrValue<BigNumberish>,
-    _data: PromiseOrValue<BytesLike>,
+    data: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   saleActive(overrides?: CallOverrides): Promise<boolean>;
-
-  secondaryMint(
-    _blueprintId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
-  secondarySupply(overrides?: CallOverrides): Promise<BigNumber>;
 
   setApprovalForAll(
     operator: PromiseOrValue<string>,
@@ -778,8 +730,6 @@ export interface Scuderia extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    genesisSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -828,18 +778,11 @@ export interface Scuderia extends BaseContract {
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     saleActive(overrides?: CallOverrides): Promise<boolean>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    secondarySupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     setApprovalForAll(
       operator: PromiseOrValue<string>,
@@ -1006,8 +949,6 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    genesisSupply(overrides?: CallOverrides): Promise<BigNumber>;
-
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1058,18 +999,11 @@ export interface Scuderia extends BaseContract {
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     saleActive(overrides?: CallOverrides): Promise<BigNumber>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    secondarySupply(overrides?: CallOverrides): Promise<BigNumber>;
 
     setApprovalForAll(
       operator: PromiseOrValue<string>,
@@ -1156,8 +1090,6 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    genesisSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
     getApproved(
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1208,18 +1140,11 @@ export interface Scuderia extends BaseContract {
       from: PromiseOrValue<string>,
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
-      _data: PromiseOrValue<BytesLike>,
+      data: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     saleActive(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    secondaryMint(
-      _blueprintId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    secondarySupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setApprovalForAll(
       operator: PromiseOrValue<string>,

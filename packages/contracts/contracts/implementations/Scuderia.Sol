@@ -12,11 +12,8 @@ import "@openzeppelin/contracts/utils/Base64.sol";
 import "erc721a/contracts/ERC721A.sol";
 
 contract Scuderia is IScuderia, Ownable, ERC721Stakable {
-    uint256 constant MAX_SUPPLY_GENESIS = 5000;
-    uint256 constant MAX_SUPPLY_SECONDARY = 10000;
+    uint256 constant MAX_SUPPLY = 5000;
     uint256 constant MAX_PER_MINT = 10;
-    uint256 public genesisSupply = 0;
-    uint256 public secondarySupply = 0;
     uint64 MINT_PRICE = 0.1 ether;
 
     string private tokenBaseURI;
@@ -38,7 +35,7 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
 
     function mint(uint256 _quantity) external payable {
         if (!saleActive) revert SaleInactive();
-        if (genesisSupply + _quantity > MAX_SUPPLY_GENESIS)
+        if (totalSupply() + _quantity > MAX_SUPPLY)
             revert SupplyWillBeExceeded();
         if (_quantity == 0 || _quantity > MAX_PER_MINT)
             revert InvalidMintQuantity();
@@ -46,19 +43,33 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
             revert IncorrectPaymentAmount();
 
         for (uint256 i = 1; i <= _quantity; i++) {
-            uint256 tokenId = genesisSupply + i;
+            uint256 tokenId = totalSupply() + i;
             metadataSeed[tokenId] = ScuderiaMetadata.generateMetadataSeed(
                 tokenId
             );
         }
-        genesisSupply += _quantity;
         ScootContract.updateReward(msg.sender);
 
         _safeMint(msg.sender, _quantity);
     }
 
-    function secondaryMint(uint256 _blueprintId) external {
-        // ...
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override {
+        ScootContract.updateReward(from, to);
+        ERC721A.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public override {
+        ScootContract.updateReward(from, to);
+        ERC721A.safeTransferFrom(from, to, tokenId, data);
     }
 
     /**
