@@ -23,6 +23,18 @@ interface WalletContextProps {
    * Refetch all tokens and metadata
    */
   fetchData(): Promise<void>;
+  /**
+   * Balance of Scoot tokens
+   */
+  scootBalance: number;
+  /**
+   * Unclaimed balance of Scoot tokens
+   */
+  scootBalanceUnclaimed: number;
+  /**
+   * Is the app currently fetching balances
+   */
+  loadingBalance: boolean;
 }
 
 const defaultContext: WalletContextProps = {
@@ -31,6 +43,9 @@ const defaultContext: WalletContextProps = {
   scuderia: [],
   loadingScuderia: true,
   fetchData: async () => {},
+  scootBalance: 0,
+  scootBalanceUnclaimed: 0,
+  loadingBalance: false,
 };
 
 const WalletContext = createContext<WalletContextProps>(defaultContext);
