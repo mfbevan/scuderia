@@ -11,8 +11,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ChakraProvider>
       <RainbowProvider>
         <Metadata />
-        <Navbar />
         <WalletContextProvider>
+          <Navbar />
+
           <Component {...pageProps} />
         </WalletContextProvider>
       </RainbowProvider>

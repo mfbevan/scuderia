@@ -4,8 +4,6 @@ import { Signer } from "ethers";
 import WalletContext from "./WalletContext";
 import { IScuderiaNFT } from "@scuderia/lib/types";
 import {
-  walletOf,
-  getTokenData,
   getScuderiaTokens,
   getBalance,
   getUnclaimedBalance,

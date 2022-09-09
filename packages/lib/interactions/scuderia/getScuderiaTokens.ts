@@ -33,7 +33,6 @@ export const getScuderiaTokens = async ({ signer }: IGetScuderiaTokens) => {
       }))
     );
 
-    console.log(tokenData);
     return tokenData;
   } catch (err: any) {
     console.error(err);

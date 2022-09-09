@@ -58,7 +58,9 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         address to,
         uint256 tokenId
     ) public override {
-        ScootContract.updateReward(from, to);
+        if (from != address(0)) {
+            ScootContract.updateReward(from, to);
+        }
         ERC721A.transferFrom(from, to, tokenId);
     }
 
@@ -68,7 +70,9 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
         uint256 tokenId,
         bytes memory data
     ) public override {
-        ScootContract.updateReward(from, to);
+        if (from != address(0)) {
+            ScootContract.updateReward(from, to);
+        }
         ERC721A.safeTransferFrom(from, to, tokenId, data);
     }
 
