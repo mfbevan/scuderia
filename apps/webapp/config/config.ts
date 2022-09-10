@@ -1,8 +1,9 @@
 import { chain, Chain } from "wagmi";
+import { Network } from "@scuderia/lib/types";
 
-export enum Network {
-  PolygonMainnet = "polygon",
-  PolygonMumbai = "mumbai",
+const network = process.env.NEXT_PUBLIC_NETWORK as Network;
+if (!network) {
+  throw Error("Specify network in config");
 }
 
 interface IConfig {
@@ -17,10 +18,14 @@ const polygonMumbai: IConfig = {
   chain: chain.polygonMumbai,
 };
 
-const ConfigRecord: Record<Network, IConfig> = {
-  [Network.PolygonMainnet]: polygonMainnet,
-  [Network.PolygonMumbai]: polygonMumbai,
+const localhost: IConfig = {
+  chain: chain.hardhat,
 };
 
-export const config =
-  ConfigRecord[process.env.NEXT_PUBLIC_NETWORK ?? Network.PolygonMainnet];
+const ConfigRecord: Record<Network, IConfig> = {
+  [Network.Polygon]: polygonMainnet,
+  [Network.Mumbai]: polygonMumbai,
+  [Network.Localhost]: localhost,
+};
+
+export const config = ConfigRecord[network];
