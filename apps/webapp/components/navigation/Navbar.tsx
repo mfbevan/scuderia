@@ -64,11 +64,10 @@ const Navbar = () => {
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
+          <DesktopNav />
           </Flex>
         </Flex>
 
-        <ScootBalance />
         <ConnectButton label="Connect" />
       </Flex>
 

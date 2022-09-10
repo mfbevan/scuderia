@@ -5,6 +5,7 @@ import { RainbowProvider } from "../providers/RainbowProvider";
 import { Metadata } from "../providers/Metadata";
 import { Navbar } from "../components/navigation";
 import WalletContextProvider from "../providers/context/WalletContextProvider";
+import { ScootBalance } from "../components/tokens/ScootBalance";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Metadata />
         <WalletContextProvider>
           <Navbar />
+          <ScootBalance />
 
           <Component {...pageProps} />
         </WalletContextProvider>
