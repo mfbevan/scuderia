@@ -15,7 +15,8 @@ interface IGetBalance {
 export const getBalance = async ({ signer }: IGetBalance) => {
   if (!signer) return 0;
   try {
-    const balance = await ScootContract(signer).balanceOf(await signer.getAddress());
+    const address = await signer.getAddress();
+    const balance = await ScootContract(signer).balanceOf(address);
     return parseFloat(formatEther(balance));
   } catch (err: any) {
     console.error(err);
