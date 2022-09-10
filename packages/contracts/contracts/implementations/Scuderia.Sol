@@ -1,0 +1,154 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.16;
+
+import "../interfaces/IScuderia.sol";
+import "./Scoot.sol";
+import "../libraries/ScuderiaMetadata.sol";
+import "./ERC721Stakable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
+
+import "erc721a/contracts/ERC721A.sol";
+
+contract Scuderia is IScuderia, Ownable, ERC721Stakable {
+    uint256 constant MAX_SUPPLY = 5000;
+    uint256 constant MAX_PER_MINT = 10;
+    uint256 public MINT_PRICE = 0.1 ether;
+
+    string private tokenBaseURI;
+    string private contractURI;
+
+    // tokenId => metadataSeed (randomised on mint)
+    mapping(uint256 => bytes32) public metadataSeed;
+
+    bool public saleActive = false;
+
+    Scoot ScootContract;
+
+    constructor(address _ownerAddress) ERC721Stakable("Scuderia", "SCD") {
+        require(_ownerAddress != address(0), "owner address cannot be 0x0");
+        if (_ownerAddress != msg.sender) {
+            transferOwnership(_ownerAddress);
+        }
+    }
+
+    function mint(uint256 _quantity) external payable {
+        if (!saleActive) revert SaleInactive();
+        if (totalSupply() + _quantity > MAX_SUPPLY)
+            revert SupplyWillBeExceeded();
+        if (_quantity == 0 || _quantity > MAX_PER_MINT)
+            revert InvalidMintQuantity();
+        if (msg.value != MINT_PRICE * _quantity)
+            revert IncorrectPaymentAmount();
+
+        for (uint256 i = 1; i <= _quantity; i++) {
+            uint256 tokenId = totalSupply() + i;
+            metadataSeed[tokenId] = ScuderiaMetadata.generateMetadataSeed(
+                tokenId
+            );
+        }
+        ScootContract.updateReward(msg.sender);
+
+        _safeMint(msg.sender, _quantity);
+    }
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override {
+        if (from != address(0)) {
+            ScootContract.updateReward(from, to);
+        }
+        ERC721A.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public override {
+        if (from != address(0)) {
+            ScootContract.updateReward(from, to);
+        }
+        ERC721A.safeTransferFrom(from, to, tokenId, data);
+    }
+
+    /**
+     * @notice Build the metadata URI for supplied token
+     * @param tokenId the tokenId of the nft to generate metadata for
+     */
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
+        return
+            ScuderiaMetadata.buildMetadataURI(tokenId, metadataSeed[tokenId]);
+    }
+
+    /**
+     * @notice Sets the initial token id to start at 1 instead of 0
+     */
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
+    }
+
+    function walletOf(address _walletOwner)
+        external
+        view
+        returns (uint256[] memory result)
+    {
+        uint256 tokenCount = balanceOf(_walletOwner);
+        if (tokenCount == 0) {
+            return new uint256[](0);
+        } else {
+            result = new uint256[](tokenCount);
+            uint256 index = 0;
+
+            for (uint256 tokenId = 1; tokenId <= _totalMinted(); tokenId++) {
+                if (index == tokenCount) break;
+                if (ownerOf(tokenId) == _walletOwner) {
+                    result[index] = tokenId;
+                    index++;
+                }
+            }
+        }
+    }
+
+    /**
+     * @notice Toggle whether nft minting is active
+     */
+    function toggleSale() external onlyOwner {
+        saleActive = !saleActive;
+    }
+
+    /**
+     * @notice Transfer funds out of contract
+     * @param _recipient Receiver of funds
+     */
+    function withdraw(address _recipient) public onlyOwner {
+        payable(_recipient).transfer(address(this).balance);
+    }
+
+    /**
+     * @notice Set the Scoot Token Contract
+     * @param _address Address of the contract
+     */
+    function setScootContract(Scoot _address) public onlyOwner {
+        ScootContract = _address;
+    }
+
+    /**
+     * @notice Set the mint price for the token
+     * @param _price new price to use
+     */
+    function setPrice(uint256 _price) public onlyOwner {
+        MINT_PRICE = _price;
+    }
+}

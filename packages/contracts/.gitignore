@@ -4,7 +4,6 @@
 # hardhat
 artifacts
 cache
-deployments
 node_modules
 
 
@@ -12,7 +11,7 @@ cache/
 artifacts/
 
 coverage*
-typechain/
+# typechain/
 
 .vscode/*
 !.vscode/settings.json.default
@@ -26,8 +25,8 @@ node_modules/
 yalc.lock
 
 contractsInfo.json
-deployments/hardhat
-deployments/localhost
+# deployments/hardhat
+# deployments/localhost
 
 # don't push the environment vars!
 .env

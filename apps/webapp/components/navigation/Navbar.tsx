@@ -14,6 +14,7 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { DesktopNav } from "./NavigationDesktop";
 import { MobileNav } from "./NavigationMobile";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ScootBalance } from "../tokens/ScootBalance";
 
 const Navbar = () => {
   const { isOpen, onToggle } = useDisclosure();
@@ -63,7 +64,7 @@ const Navbar = () => {
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
+          <DesktopNav />
           </Flex>
         </Flex>
 
