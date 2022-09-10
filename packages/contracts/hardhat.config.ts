@@ -21,6 +21,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   for (const account of accounts) {
     console.log(account.address);
   }
+
+  await hre.network.provider.send("evm_setIntervalMining", [5000]);
 });
 
 // You need to export an object to set up your config

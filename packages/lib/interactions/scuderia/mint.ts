@@ -2,7 +2,8 @@ import { Signer } from "ethers";
 import { parseEther } from "ethers/lib/utils";
 import { ScuderiaContract } from "@scuderia/contracts/deployments";
 
-const MINT_PRICE = parseEther("0.1");
+// Currently free but we still need to pass in a value
+const MINT_PRICE = parseEther("0");
 
 interface IMint {
   /**
@@ -20,7 +21,7 @@ interface IMint {
  */
 export const mint = async ({ signer, quantity }: IMint) => {
   const tx = await ScuderiaContract(signer).mint(quantity, {
-    value: MINT_PRICE.mul(quantity),
+    value: 0,
   });
   await tx.wait();
 };

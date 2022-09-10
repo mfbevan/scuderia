@@ -14,7 +14,7 @@ import "erc721a/contracts/ERC721A.sol";
 contract Scuderia is IScuderia, Ownable, ERC721Stakable {
     uint256 constant MAX_SUPPLY = 5000;
     uint256 constant MAX_PER_MINT = 10;
-    uint64 MINT_PRICE = 0.1 ether;
+    uint256 public MINT_PRICE = 0.1 ether;
 
     string private tokenBaseURI;
     string private contractURI;
@@ -142,5 +142,13 @@ contract Scuderia is IScuderia, Ownable, ERC721Stakable {
      */
     function setScootContract(Scoot _address) public onlyOwner {
         ScootContract = _address;
+    }
+
+    /**
+     * @notice Set the mint price for the token
+     * @param _price new price to use
+     */
+    function setPrice(uint256 _price) public onlyOwner {
+        MINT_PRICE = _price;
     }
 }

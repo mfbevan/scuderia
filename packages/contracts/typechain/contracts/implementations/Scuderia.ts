@@ -42,6 +42,7 @@ export declare namespace IStakable {
 
 export interface ScuderiaInterface extends utils.Interface {
   functions: {
+    "MINT_PRICE()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burn(uint256)": FunctionFragment;
@@ -58,6 +59,7 @@ export interface ScuderiaInterface extends utils.Interface {
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
     "saleActive()": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setPrice(uint256)": FunctionFragment;
     "setScootContract(address)": FunctionFragment;
     "stake(uint256[],uint8)": FunctionFragment;
     "stakes(uint256)": FunctionFragment;
@@ -75,6 +77,7 @@ export interface ScuderiaInterface extends utils.Interface {
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "MINT_PRICE"
       | "approve"
       | "balanceOf"
       | "burn"
@@ -91,6 +94,7 @@ export interface ScuderiaInterface extends utils.Interface {
       | "safeTransferFrom(address,address,uint256,bytes)"
       | "saleActive"
       | "setApprovalForAll"
+      | "setPrice"
       | "setScootContract"
       | "stake"
       | "stakes"
@@ -106,6 +110,10 @@ export interface ScuderiaInterface extends utils.Interface {
       | "withdraw"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "MINT_PRICE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "approve",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
@@ -174,6 +182,10 @@ export interface ScuderiaInterface extends utils.Interface {
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setPrice",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setScootContract",
     values: [PromiseOrValue<string>]
   ): string;
@@ -227,6 +239,7 @@ export interface ScuderiaInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
 
+  decodeFunctionResult(functionFragment: "MINT_PRICE", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
@@ -267,6 +280,7 @@ export interface ScuderiaInterface extends utils.Interface {
     functionFragment: "setApprovalForAll",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "setPrice", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setScootContract",
     data: BytesLike
@@ -427,6 +441,8 @@ export interface Scuderia extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -505,6 +521,11 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setPrice(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setScootContract(
       _address: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -571,6 +592,8 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
 
   approve(
     to: PromiseOrValue<string>,
@@ -650,6 +673,11 @@ export interface Scuderia extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setPrice(
+    _price: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setScootContract(
     _address: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -714,6 +742,8 @@ export interface Scuderia extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -787,6 +817,11 @@ export interface Scuderia extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPrice(
+      _price: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -933,6 +968,8 @@ export interface Scuderia extends BaseContract {
   };
 
   estimateGas: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -1011,6 +1048,11 @@ export interface Scuderia extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setPrice(
+      _price: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setScootContract(
       _address: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1074,6 +1116,8 @@ export interface Scuderia extends BaseContract {
   };
 
   populateTransaction: {
+    MINT_PRICE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -1149,6 +1193,11 @@ export interface Scuderia extends BaseContract {
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPrice(
+      _price: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

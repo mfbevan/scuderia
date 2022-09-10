@@ -53,4 +53,22 @@ describe("Scuderia Racing ERC721 Admin Actions", () => {
       ).to.be.revertedWith(OWNABLE_ERROR);
     });
   });
+  describe("setPrice", () => {
+    it("should set the new mint price", async () => {
+      const initial = await Scuderia.MINT_PRICE();
+      expect(initial).to.eq(MINT_PRICE);
+
+      await Scuderia.setPrice(0);
+
+      const final = await Scuderia.MINT_PRICE();
+
+      expect(final).to.not.eq(initial);
+      expect(final).to.eq(BigNumber.from(0));
+    });
+    it("should revert if not contract owner", async () => {
+      await expect(
+        Scuderia.connect(alice).setPrice(parseEther("100"))
+      ).to.be.revertedWith(OWNABLE_ERROR);
+    });
+  });
 });
