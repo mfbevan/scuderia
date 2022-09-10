@@ -57,6 +57,12 @@ const config: HardhatUserConfig = {
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
       saveDeployments: true,
     },
+    polygon: {
+      url: process.env.POLYGON_RPC_URL,
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      saveDeployments: true,
+    }
   },
   gasReporter: {
     enabled: true,
