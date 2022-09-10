@@ -21,11 +21,8 @@ export const ScootBalance = () => {
     fetchData,
   } = useContext(WalletContext);
 
-  if (!signer) {
+  if (!signer || loadingBalance) {
     return <></>;
-  }
-  if (loadingBalance) {
-    return <Spinner />;
   }
 
   const handleClaim = async () => {
