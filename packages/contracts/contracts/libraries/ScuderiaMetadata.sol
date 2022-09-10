@@ -59,22 +59,27 @@ library ScuderiaMetadata {
                     "data:application/json;base64,",
                     Base64.encode(
                         bytes(
-                            abi.encodePacked(
-                                '{"name":"Scuderia NFT", "image":"',
-                                buildImage(_attributes),
-                                '", "tokenId":"',
-                                Strings.toString(tokenId),
-                                '", "color":"',
-                                _attributes.color,
-                                '", "speed":"',
-                                Strings.toString(_attributes.speed),
-                                '", "acceleration":"',
-                                Strings.toString(_attributes.acceleration),
-                                '", "handling":"',
-                                Strings.toString(_attributes.handling),
-                                '", "reliability":"',
-                                Strings.toString(_attributes.reliability),
-                                unicode'", "description": "Scuderia is a fully on-chain racing NFT ecosystem that allows minting, metadata and image generation, racing and betting, all running on Polygon."}'
+                            bytes.concat(
+                                abi.encodePacked(
+                                    '{"name":"Scuderia NFT", "image":"',
+                                    buildImage(_attributes),
+                                    '", "tokenId":"',
+                                    Strings.toString(tokenId),
+                                    unicode'", "description": "Scuderia is a fully on-chain racing NFT ecosystem that allows minting, metadata and image generation, racing and betting, all running on Polygon.",',
+                                    ' "attributes": [{ "trait_type": "Speed", "value": "',
+                                    Strings.toString(_attributes.speed)
+                                ),
+                                abi.encodePacked(
+                                    '"},{ "trait_type": "Acceleration", "value": "',
+                                    Strings.toString(_attributes.acceleration),
+                                    '"},{ "trait_type": "Handling", "value": "',
+                                    Strings.toString(_attributes.handling),
+                                    '"},{ "trait_type": "Reliability", "value": "',
+                                    Strings.toString(_attributes.reliability),
+                                    '"},{ "trait_type": "Color", "value": "#',
+                                    _attributes.color,
+                                    '"}]}'
+                                )
                             )
                         )
                     )
@@ -158,10 +163,10 @@ library ScuderiaMetadata {
         return
             Metadata(
                 seedToHexColor(_seed, 0),
-                uint256(_seed >> 6) % 70 + 31,
-                uint256(_seed >> 12) % 70 + 31,
-                uint256(_seed >> 18) % 70 + 31,
-                uint256(_seed >> 24) % 70 + 31
+                (uint256(_seed >> 6) % 70) + 31,
+                (uint256(_seed >> 12) % 70) + 31,
+                (uint256(_seed >> 18) % 70) + 31,
+                (uint256(_seed >> 24) % 70) + 31
             );
     }
 }

@@ -29,10 +29,12 @@ describe("Scuderia Racing ERC721 Metadata Generation", () => {
     await Scuderia.connect(alice).mint(1, { value: MINT_PRICE });
   });
 
-  describe("Build Metadata", () => {
+  describe.only("Build Metadata", () => {
     it("should return the token metadata", async () => {
       const uri = await Scuderia.tokenURI(1);
       const metadata = decodeBase64(uri);
+
+      console.log(metadata)
       expect(metadata.name).to.eq(name);
       expect(metadata.description).to.eq(description);
       expect(metadata.tokenId).to.eq(1);
