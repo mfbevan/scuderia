@@ -6,6 +6,8 @@ import ScuderiaLocalhost from "../deployments/localhost/Scuderia.json";
 import ScootLocalhost from "../deployments/localhost/Scoot.json";
 import ScuderiaMumbai from "../deployments/mumbai/Scuderia.json";
 import ScootMumbai from "../deployments/mumbai/Scoot.json";
+import ScuderiaPolygon from "../deployments/polygon/Scuderia.json";
+import ScootPolygon from "../deployments/polygon/Scoot.json";
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Network;
 if (!network) {
@@ -18,7 +20,7 @@ interface NetworkContracts {
 }
 
 const getContracts: Record<Network, NetworkContracts> = {
-  [Network.Polygon]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
+  [Network.Polygon]: { scuderia: ScuderiaPolygon, scoot: ScootPolygon },
   [Network.Mumbai]: { scuderia: ScuderiaMumbai, scoot: ScootMumbai },
   [Network.Localhost]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
 };
