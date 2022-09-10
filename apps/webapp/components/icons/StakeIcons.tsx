@@ -1,6 +1,6 @@
 import { Box, Tooltip } from "@chakra-ui/react";
 import { Stake } from "@scuderia/lib/types";
-import { FcLock, FcUnlock } from "react-icons/Fc";
+import { FcLock, FcUnlock } from "react-icons/fc";
 
 const StakedIcon = ({stake}: {stake: Stake}) => {
   return (
