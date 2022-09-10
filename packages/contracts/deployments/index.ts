@@ -4,6 +4,8 @@ import { Network } from "@scuderia/lib/types";
 import { Scuderia, Scoot } from "../typechain";
 import ScuderiaLocalhost from "../deployments/localhost/Scuderia.json";
 import ScootLocalhost from "../deployments/localhost/Scoot.json";
+import ScuderiaMumbai from "../deployments/mumbai/Scuderia.json";
+import ScootMumbai from "../deployments/mumbai/Scoot.json";
 
 const network = process.env.NEXT_PUBLIC_NETWORK as Network;
 if (!network) {
@@ -17,7 +19,7 @@ interface NetworkContracts {
 
 const getContracts: Record<Network, NetworkContracts> = {
   [Network.Polygon]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
-  [Network.Mumbai]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
+  [Network.Mumbai]: { scuderia: ScuderiaMumbai, scoot: ScootMumbai },
   [Network.Localhost]: { scuderia: ScuderiaLocalhost, scoot: ScootLocalhost },
 };
 
