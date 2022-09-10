@@ -1,9 +1,19 @@
 import type { NextPage } from "next";
 import { Heading, Center, VStack, Text } from "@chakra-ui/react";
 import { Minter } from "../../components/minter/Minter";
+import { useContext } from "react";
+import WalletContext from "../../providers/context/WalletContext";
 
 const Mint: NextPage = () => {
-  
+  const { signer } = useContext(WalletContext);
+  if (!signer) {
+    return (
+      <Text align="center" mt={4}>
+        Connect your wallet
+      </Text>
+    );
+  }
+
   return (
     <>
       <Center py={4}>
