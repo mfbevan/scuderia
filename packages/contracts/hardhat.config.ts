@@ -52,7 +52,7 @@ const config: HardhatUserConfig = {
       saveDeployments: true,
     },
     mumbai: {
-      url: "https://rpc-mumbai.maticvigil.com",
+      url: process.env.MUMBAI_RPC_URL,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
       saveDeployments: true,
@@ -63,7 +63,7 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: process.env.POLYGONSCAN_API_KEY,
   },
   namedAccounts: {
     deployer: 0,
