@@ -19,7 +19,7 @@ The goal of this project is to create a fully on-chain racing NFT ecosystem that
 
 <br/>
 
-NOTE: Feel free to use any of the code in this repository for your own projects. None of the contracts in this repository have been audited, and I take no responsibility for issues which may arise out of their extended use.
+NOTE: This is a development project only. Feel free to use any of the code in this repository for your own projects. None of the contracts in this repository have been audited, and I take no responsibility for issues which may arise out of their extended use.
 
 ## Deployed Contracts
 
