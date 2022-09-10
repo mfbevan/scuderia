@@ -28,13 +28,24 @@ NOTE: Feel free to use any of the code in this repository for your own projects.
 *Scuderia.sol*
 
 - `0x52631b00fC363C44E3EbF5cB9188B36c312679A7`
-
 - [Mumbai Polygonscan](https://mumbai.polygonscan.com/address/0x52631b00fC363C44E3EbF5cB9188B36c312679A7)
 
 *Scoot.sol*
 
 - `0xA11D899DDE52F7DEd2bE997da00Cf609a2555326`
 - [Mumbai Polygonscan](https://mumbai.polygonscan.com/address/0xA11D899DDE52F7DEd2bE997da00Cf609a2555326)
+
+### Polygon Mainnet
+
+*Scuderia.sol*
+
+- `0x8e7F6848BB252fa68De6cfD3745f7f7C7a0342CF`
+- [Polygonscan](https://polygonscan.com/address/0x8e7F6848BB252fa68De6cfD3745f7f7C7a0342CF)
+
+*Scoot.sol*
+
+- `0xA0689b3b8d53613b5E34EC958198D2b5778c9eaF`
+- [Polygonscan](https://polygonscan.com/address/0xA0689b3b8d53613b5E34EC958198D2b5778c9eaF)
 
 ## Test Coverage
 
