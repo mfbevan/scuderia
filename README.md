@@ -1,4 +1,4 @@
-# <div align="center">🏎️💨</div>  
+# <div align="center"><img src="./images/token.png" width="200px"/></div>  
   
 
 ### <div align="center">Ferrari's Formula 1 racing team is called Scuderia Ferrari, with Scuderia translating from Italian as “stable.”</div>  
@@ -35,3 +35,13 @@ NOTE: Feel free to use any of the code in this repository for your own projects.
 
 - `0xA11D899DDE52F7DEd2bE997da00Cf609a2555326`
 - [Mumbai Polygonscan](https://mumbai.polygonscan.com/address/0xA11D899DDE52F7DEd2bE997da00Cf609a2555326)
+
+## Test Coverage
+
+Missing test coverage is on functions which have protective functionality on internal functions which are difficult to test within a hardhat environment
+
+<div align="center"><img src="./images/tests1.png"/>
+<img src="./images/tests2.png"/>
+<img src="./images/tests3.png"/></div>  
+<img src="./images/tests4.png"/></div>  
+

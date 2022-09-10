@@ -10,7 +10,7 @@ export interface Stake {
   /**
    * Lockin period before stake can be released
    */
-  lockinPeriod: number
+  lockinPeriod: number;
 }
 
 export interface IScuderiaNFT {
@@ -49,5 +49,9 @@ export interface IScuderiaNFT {
   /**
    * The staking status of the token
    */
-  stakeStatus?: Stake
+  stakeStatus?: Stake;
+  /**
+   * Opensea attributes
+   */
+  attributes: { trait_type: string; value: string }[];
 }
