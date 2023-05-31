@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@react-three/drei": "^9.70.0",
     "@react-three/fiber": "^8.13.0",
     "framer": "^2.3.0",
     "motion": "^10.16.2",

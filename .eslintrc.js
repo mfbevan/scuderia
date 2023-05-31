@@ -1,10 +1,69 @@
 module.exports = {
-  root: true,
-  // This tells ESLint to load the config from the package `eslint-config-custom`
-  extends: ["custom"],
-  settings: {
-    next: {
-      rootDir: ["apps/*/"],
-    },
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+  },
+  extends: [
+    "next",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "airbnb",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:eslint-comments/recommended",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+  ],
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
+  },
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: "module",
+  },
+  plugins: ["@typescript-eslint", "@shopify"],
+  rules: {
+    "@next/next/no-html-link-for-pages": "off",
+    "react/jsx-key": "off",
+    "react/jsx-filename-extension": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/function-component-definition": 0,
+    "react/jsx-no-useless-fragment": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/require-default-props": 0,
+    "import/extensions": 0,
+    "import/no-unresolved": 0,
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "off",
+      {
+        devDependencies: false,
+        optionalDependencies: false,
+        peerDependencies: false,
+      },
+    ],
+    "import/order": [
+      2,
+      {
+        "newlines-between": "always",
+        alphabetize: { order: "asc", caseInsensitive: true },
+      },
+    ],
+    "no-use-before-define": 0,
+    "no-underscore-dangle": 0,
+    "no-undef": 0,
+    "no-unused-vars": 0,
+    "no-shadow": "off",
+    "arrow-body-style": 2,
+    "@typescript-eslint/no-shadow": ["error"],
+    "@shopify/prefer-early-return": 1,
+    "@shopify/typescript/prefer-pascal-case-enums": 2,
+    "@shopify/typescript/prefer-singular-enums": 2,
+    "eslint-comments/disable-enable-pair": 0,
+    quotes: [2, "double"],
   },
 };

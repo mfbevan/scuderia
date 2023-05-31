@@ -3,6 +3,7 @@
 const withTM = require("next-transpile-modules")([
   "@scuderia/lib",
   "@scuderia/contracts",
+  "three",
 ]);
 
 const nextConfig = withTM({
